@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# maxrecursion.dev
 
-## Getting Started
+Personal site of Akshay Kulkarni (MaxRecursion). Next.js 16 (App Router, Cache Components), Tailwind v4, deployed on Vercel.
 
-First, run the development server:
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| What | File |
+| --- | --- |
+| Name, bio, links, experience, skills | `content/site.ts` |
+| Featured order, hidden repos, per-repo copy and screenshots | `content/projects.ts` |
+| Screenshots for featured cards | `public/projects/` |
+| GitHub fetch (cached for an hour with `'use cache'` + `cacheLife('hours')`) | `lib/github.ts` |
+| Hero fluid simulation (WebGL2) | `components/hero/fluid/` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+New public repos appear on their own within an hour. A repo gets a **Live** link when GitHub Pages is on, or when its `homepage` field points somewhere other than github.com.
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
+1. Push this folder to a GitHub repo (for example `MaxRecursion/maxrecursion.dev`).
+2. In Vercel, **Add New → Project** and import the repo. The framework is detected automatically.
+3. Optional: add the environment variable `GITHUB_TOKEN`, a fine-grained token with read-only access to public repositories. It raises the GitHub API rate limit for builds.
+4. **Settings → Domains**: add `maxrecursion.dev`, and add `www.maxrecursion.dev` with a redirect to the apex.
+5. At your domain registrar, create the DNS records Vercel shows (an `A` record for the apex and a `CNAME` for `www`), or switch the nameservers to Vercel.
+6. `.dev` domains only work over HTTPS (HSTS preload). Vercel issues the certificate automatically once DNS resolves.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Then turn on **Analytics** and **Speed Insights** in the Vercel project; the components are already in `app/layout.tsx`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Credits
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The fluid solver follows Jos Stam's *Stable Fluids* and the approach popularised by Pavel Dobryakov's WebGL-Fluid-Simulation.

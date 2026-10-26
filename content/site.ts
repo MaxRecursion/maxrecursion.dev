@@ -1,0 +1,42 @@
+export const site = {
+  name: "Akshay Kulkarni",
+  handle: "MaxRecursion",
+  url: "https://maxrecursion.dev",
+  location: "Pune, India",
+  role: "Senior Software Engineer",
+  tagline: "Building things, one call stack at a time.",
+  description:
+    "Akshay Kulkarni (MaxRecursion) is a senior software engineer in Pune who builds financial systems on .NET by day, and interactive 3D explainers, native macOS tools and data experiments the rest of the time.",
+  bio: [
+    "I've spent more than fourteen years building software for finance: mortgage platforms at Accenture, a flagship money-transfer product at Fiserv where I was tech lead, and today .NET and Blazor WebAssembly applications at Deutsche Bank with an AI-first workflow.",
+    "Outside work I build whatever I can't stop thinking about: an interactive 3D teardown of a 2026 F1 car, lessons on how cars work, a native macOS disk analyzer, and a pipeline that checks whether the day you start a SIP actually matters. This site collects them.",
+  ],
+  links: {
+    github: "https://github.com/MaxRecursion",
+    linkedin: "https://www.linkedin.com/in/akshaykulkarni89",
+  },
+  experience: [
+    { company: "Deutsche Bank", role: "Senior Software Engineer", period: "2023 – now" },
+    { company: "Fiserv", role: "Tech Lead · Technical Analyst", period: "2016 – 2023" },
+    { company: "Accenture", role: "Software Engineering Analyst", period: "2014 – 2016" },
+    { company: "Fasttrack Software Services", role: "Software Engineer", period: "2011 – 2014" },
+  ],
+  skills: [
+    "C#",
+    ".NET",
+    "ASP.NET Core Web API",
+    "ASP.NET MVC",
+    "Blazor WebAssembly",
+    "WCF",
+    "SQL Server",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Swift & SwiftUI",
+    "Python",
+    "WebGL & Three.js",
+    "Google Cloud",
+    "LLM integrations",
+    "Playwright",
+  ],
+} as const;

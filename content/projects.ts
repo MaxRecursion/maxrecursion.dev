@@ -1,0 +1,71 @@
+export type ProjectOverride = {
+  title?: string;
+  description?: string;
+  /** Path under /public, e.g. "/projects/disklens.png". Without one, the card draws a placeholder panel. */
+  image?: string;
+  tags?: string[];
+};
+
+/** Featured projects, in display order. */
+export const featured = ["ActiveAero_F1", "AutoVerse", "DiskLens", "DataDrivenSIP", "f1analyst", "Xposter"];
+
+/** Repos left out of the site entirely. */
+export const hidden = [
+  "GithubActions",
+  "FirstAngular",
+  "ToDoList",
+  "Flasher-for-Windows-Phone",
+  // Its Pages site holds personal blood-report values; don't drive extra traffic to it.
+  "HealthVault",
+];
+
+export const overrides: Record<string, ProjectOverride> = {
+  ActiveAero_F1: {
+    title: "UNSEEN: the 2026 F1 car, opened up",
+    description:
+      "An interactive 3D explainer of a 2026 Formula 1 car. Six stations, from downforce to active aero: change an input, watch the car and its live readouts respond, then see why.",
+    tags: ["3D", "Physics", "F1"],
+    image: "/projects/activeaero.jpg",
+  },
+  AutoVerse: {
+    image: "/projects/autoverse.jpg",
+    description:
+      "Interactive lessons on how cars work: engines, gearboxes, brakes and suspension, with live 3D labs and quizzes. Prerendered with Vite SSR.",
+    tags: ["React", "3D", "Vite", "Playwright"],
+  },
+  DiskLens: {
+    description:
+      "Native macOS disk-space analyzer and safe cleaner. Read-only scans, an interactive treemap, APFS clone-aware reclaim estimates and approval-bound cleanup.",
+    tags: ["Swift", "SwiftUI", "macOS", "CLI"],
+  },
+  DataDrivenSIP: {
+    title: "Tithi: SIP Date Planner",
+    description:
+      "Does the day of the month you run a SIP matter? A nightly pipeline simulates every date across 994 Indian mutual funds and solves each XIRR to find out.",
+    tags: ["Data pipeline", "Finance", "Node"],
+    image: "/projects/tithi.jpg",
+  },
+  f1analyst: {
+    title: "F1 Analyst",
+    description:
+      "Client-side analytics on Blazor WebAssembly, measuring three local query-engine topologies over 1M rows.",
+    tags: ["Blazor", "WebAssembly", "Benchmarks"],
+  },
+  Xposter: {
+    description:
+      "A local X automation system: Playwright timeline ingest, tweet scoring, RAG over Voyage embeddings, LLM replies and scheduled posts, with phone notifications.",
+    tags: ["TypeScript", "SQLite", "Playwright", "RAG"],
+  },
+  CSVToParquet: {
+    title: "CSV to Parquet",
+    description:
+      "A streaming service that converts multi-GB CSV files to Parquet with DuckDB, without ever holding a file in memory.",
+  },
+  FlasheraSmasher: {
+    description:
+      "A bot that reads X posts, picks the ones to reply to with predefined rules, and writes replies with Claude.",
+  },
+  ProgressTrackerWidget: {
+    title: "Progress Tracker Widget",
+  },
+};
