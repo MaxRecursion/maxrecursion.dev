@@ -16,14 +16,14 @@ export default function Image() {
           flexDirection: "column",
           justifyContent: "center",
           padding: 80,
-          color: "#ededf0",
+          color: "#ede8dc",
           background:
-            "radial-gradient(60% 70% at 25% 35%, rgba(167,139,250,0.55), transparent 70%), radial-gradient(55% 60% at 80% 70%, rgba(34,211,238,0.4), transparent 70%), #07070a",
+            "radial-gradient(60% 70% at 25% 35%, rgba(203,160,82,0.42), transparent 70%), radial-gradient(55% 60% at 80% 70%, rgba(143,165,143,0.3), transparent 70%), #0d0e0c",
         }}
       >
-        <div style={{ fontSize: 30, color: "#a1a1aa", fontFamily: "monospace" }}>~/maxrecursion.dev</div>
+        <div style={{ fontSize: 30, color: "#a8a294", fontFamily: "monospace" }}>~/maxrecursion.dev</div>
         <div style={{ fontSize: 96, fontWeight: 700, marginTop: 20, letterSpacing: -3 }}>{site.name}</div>
-        <div style={{ display: "flex", fontSize: 38, color: "#c4c4cc", marginTop: 16 }}>
+        <div style={{ display: "flex", fontSize: 38, color: "#cdc6b6", marginTop: 16 }}>
           {`${site.role}. ${site.tagline}`}
         </div>
       </div>

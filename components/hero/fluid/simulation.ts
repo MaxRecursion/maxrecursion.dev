@@ -57,24 +57,15 @@ const defaults: FluidOptions = {
   splatForce: 6000,
 };
 
-// Hues (0-1) used for dye, matched to the site's violet/cyan accents.
-const PALETTE = [0.75, 0.52, 0.9, 0.6, 0.48];
-
-function hsvToRgb(h: number, s: number, v: number): RGB {
-  const i = Math.floor(h * 6);
-  const f = h * 6 - i;
-  const p = v * (1 - s);
-  const q = v * (1 - f * s);
-  const t = v * (1 - (1 - f) * s);
-  switch (i % 6) {
-    case 0: return [v, t, p];
-    case 1: return [q, v, p];
-    case 2: return [p, v, t];
-    case 3: return [p, q, v];
-    case 4: return [t, p, v];
-    default: return [v, p, q];
-  }
-}
+// Dye colours, normalised to a max channel of 1: antique gold, champagne, sage,
+// burnished bronze and ivory, matching the site's gilt-and-ink palette.
+const PALETTE: RGB[] = [
+  [1, 0.79, 0.4],
+  [1, 0.9, 0.7],
+  [0.62, 0.8, 0.66],
+  [1, 0.62, 0.36],
+  [1, 0.96, 0.88],
+];
 
 export class FluidSimulation {
   private gl: WebGL2RenderingContext;
@@ -211,9 +202,8 @@ export class FluidSimulation {
 
   nextColor(boost = 1): RGB {
     this.hueIndex = (this.hueIndex + 1) % PALETTE.length;
-    const hue = PALETTE[this.hueIndex] + (Math.random() - 0.5) * 0.04;
-    const [r, g, b] = hsvToRgb(hue, 0.85, 1);
-    const k = 0.15 * boost;
+    const [r, g, b] = PALETTE[this.hueIndex];
+    const k = 0.15 * boost * (0.9 + Math.random() * 0.2);
     return [r * k, g * k, b * k];
   }
 

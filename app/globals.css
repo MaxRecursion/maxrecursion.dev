@@ -2,24 +2,26 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* "Gilt & Ink": hexes approximate Pantone 7407 C (gold), 5535/5625 C (forest/sage),
+   9224 C (ivory) and Black 3/7 C (ink), tuned for screen contrast. */
 :root {
-  --background: #fafaf9;
-  --foreground: #18181b;
-  --muted: #71717a;
-  --surface: #ffffff;
-  --border: #e4e4e7;
-  --accent: #7c3aed;
-  --accent-2: #0891b2;
+  --background: #f5f1e8;
+  --foreground: #1c1b17;
+  --muted: #67625a;
+  --surface: #fffdf8;
+  --border: #e2dbcc;
+  --accent: #7e5f1f;
+  --accent-2: #2f5141;
 }
 
 .dark {
-  --background: #07070a;
-  --foreground: #ededf0;
-  --muted: #a1a1aa;
-  --surface: #111116;
-  --border: #26262e;
-  --accent: #a78bfa;
-  --accent-2: #22d3ee;
+  --background: #0d0e0c;
+  --foreground: #ede8dc;
+  --muted: #a8a294;
+  --surface: #151613;
+  --border: #2a2a24;
+  --accent: #cba052;
+  --accent-2: #8fa58f;
 }
 
 @theme inline {
