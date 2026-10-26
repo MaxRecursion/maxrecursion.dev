@@ -10,9 +10,10 @@ export function HeroBackground() {
     <>
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(60%_50%_at_30%_40%,color-mix(in_srgb,var(--accent)_22%,transparent),transparent_70%),radial-gradient(50%_45%_at_75%_65%,color-mix(in_srgb,var(--accent-2)_18%,transparent),transparent_70%)]"
+        className="absolute inset-0 bg-[radial-gradient(60%_50%_at_30%_40%,color-mix(in_srgb,var(--accent)_14%,transparent),transparent_70%),radial-gradient(50%_45%_at_75%_65%,color-mix(in_srgb,var(--accent-2)_10%,transparent),transparent_70%)]"
       />
       <FluidCanvas />
+      <div aria-hidden="true" className="grain pointer-events-none absolute inset-0" />
     </>
   );
 }

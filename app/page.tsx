@@ -3,6 +3,7 @@ import { Hero } from "@/components/hero/Hero";
 import { FeaturedCard } from "@/components/projects/FeaturedCard";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
 import { Reveal } from "@/components/Reveal";
+import { TaglineReveal } from "@/components/TaglineReveal";
 import { Footer, Header, Section } from "@/components/sections";
 import { caseStudies } from "@/content/case-studies";
 import { site } from "@/content/site";
@@ -34,6 +35,7 @@ export default async function Home() {
       <Header />
       <main id="main">
         <Hero />
+        <TaglineReveal eyebrow={site.tagline} text={site.hero.statement} />
 
         <Section id="projects" eyebrow="Selected work" title="Projects">
           <div className="grid gap-6 md:grid-cols-2">

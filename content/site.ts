@@ -12,10 +12,12 @@ export const site = {
   tagline: "Building things, one call stack at a time.",
   summary:
     "15+ years building software, 12+ of them in payments, mortgage and banking. Independently: data pipelines, native apps, interactive 3D and AI-powered tools.",
-  // Hero copy follows the landing-page-design skill: no hyphens, and each headline entry is one
-  // rendered line, broken where the thought breaks.
+  // Hero copy follows the landing-page-design skill: no hyphens, and every headline entry is one
+  // rendered line, broken where the thought breaks (two beats, two lines each).
   hero: {
-    headline: ["Banking software by day.", "Pipelines and 3D by night."],
+    headline: ["Serious software", "for money.", "Playful software", "for the rest."],
+    statement:
+      "I build the systems that move money by day, and the things I can't stop thinking about by night.",
     intro:
       "I'm Akshay Kulkarni, a senior software engineer in Pune. 15+ years shipping software, 12+ of them in payments, mortgage and banking. Outside work I build data pipelines, native macOS apps, interactive 3D explainers and LLM tools.",
     proof: "CorpoRat-developer since 2011",

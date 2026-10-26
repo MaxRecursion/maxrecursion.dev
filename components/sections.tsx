@@ -5,18 +5,22 @@ import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { ThemeToggle } from "@/components/theme";
 
 const navLink =
-  "rounded-full px-2.5 py-2.5 text-muted transition hover:text-foreground sm:px-3";
+  "rounded-full px-2 py-3 text-muted transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-foreground sm:px-3";
 
+// A compact translucent pill that floats off the top edge, sized to its content.
 export function Header() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-md">
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2 sm:px-6">
-        <Link href="/" className="rounded-md py-2 font-mono text-sm font-medium" aria-label="f(MaxRecursion), home">
+    <header className="pointer-events-none fixed inset-x-0 top-4 z-50 flex justify-center px-4">
+      <div
+        className="hero-rise pointer-events-auto flex items-center gap-1 rounded-full border border-border bg-background/60 py-1 pl-3 pr-1 backdrop-blur-xl sm:pl-4"
+        style={{ "--rise-delay": "0ms" } as React.CSSProperties}
+      >
+        <Link href="/" className="rounded-full py-3 pr-2 font-mono text-sm font-medium" aria-label="f(MaxRecursion), home">
           <span className="text-accent">{"f("}</span>
           {site.handle}
           <span className="text-accent">{")"}</span>
         </Link>
-        <nav aria-label="Primary" className="flex items-center gap-0.5 text-sm sm:gap-1">
+        <nav aria-label="Primary" className="flex items-center gap-1 text-sm">
           <Link href="/#projects" className={navLink}>
             Projects
           </Link>

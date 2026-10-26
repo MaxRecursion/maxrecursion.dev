@@ -60,7 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <noscript>
-          <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
+          <style>{".reveal{opacity:1!important;transform:none!important}.tagline-word{opacity:1!important}"}</style>
         </noscript>
         <Providers>{children}</Providers>
         <Analytics />
