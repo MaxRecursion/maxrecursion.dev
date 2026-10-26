@@ -161,9 +161,11 @@ export class FluidSimulation {
     return this.running;
   }
 
+  // The context is deliberately not lost here: a remount on the same canvas (React's dev double
+  // effect, hot reload) gets that context back from getContext, and a lost one never draws again.
+  // WebKit paints such a canvas solid white. The context is freed with the canvas element.
   destroy() {
     this.stop();
-    this.gl.getExtension("WEBGL_lose_context")?.loseContext();
   }
 
   /** Splat at (x, y) in 0-1 canvas space, moving by (dx, dy) in the same units. */

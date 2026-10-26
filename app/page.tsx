@@ -22,7 +22,6 @@ export default async function Home() {
     jobTitle: site.role,
     address: { "@type": "PostalAddress", addressLocality: "Pune", addressCountry: "IN" },
     sameAs: [site.links.github, site.links.linkedin],
-    worksFor: { "@type": "Organization", name: site.experience[0].company },
     knowsAbout: site.skills,
   };
 
@@ -90,14 +89,13 @@ export default async function Home() {
             </div>
             <div className="space-y-10">
               <div>
-                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Where I&apos;ve worked</h3>
+                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
+                  As a <span className="normal-case tracking-normal">CorpoRat-developer</span>
+                </h3>
                 <ol className="mt-4 space-y-3">
                   {site.experience.map((job) => (
-                    <li key={job.company} className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
-                      <div>
-                        <p className="font-medium">{job.company}</p>
-                        <p className="text-sm text-muted">{job.role}</p>
-                      </div>
+                    <li key={job.period} className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
+                      <p className="font-medium">{job.role}</p>
                       <span className="shrink-0 font-mono text-xs text-muted">{job.period}</span>
                     </li>
                   ))}

@@ -79,9 +79,10 @@ export default function FluidCanvas() {
 
     sim.randomSplats(6);
     sim.start();
-    requestAnimationFrame(() => setReady(true));
+    const reveal = requestAnimationFrame(() => setReady(true));
 
     return () => {
+      cancelAnimationFrame(reveal);
       window.clearInterval(idle);
       window.clearInterval(recolor);
       observer.disconnect();
