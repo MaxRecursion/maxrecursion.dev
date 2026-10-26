@@ -4,6 +4,8 @@ export type ProjectOverride = {
   /** Path under /public, e.g. "/projects/disklens.png". Without one, the card draws a placeholder panel. */
   image?: string;
   tags?: string[];
+  /** Live site; wins over the GitHub Pages URL and the repo's homepage field. */
+  liveUrl?: string;
 };
 
 /** Featured projects, in display order. */
@@ -26,9 +28,11 @@ export const overrides: Record<string, ProjectOverride> = {
       "An interactive 3D explainer of a 2026 Formula 1 car. Six stations, from downforce to active aero: change an input, watch the car and its live readouts respond, then see why.",
     tags: ["3D", "Physics", "F1"],
     image: "/projects/activeaero.jpg",
+    liveUrl: "https://unseen.maxrecursion.dev",
   },
   AutoVerse: {
     image: "/projects/autoverse.jpg",
+    liveUrl: "https://autoverse.maxrecursion.dev",
     description:
       "Interactive lessons on how cars work: engines, gearboxes, brakes and suspension, with live 3D labs and quizzes. Prerendered with Vite SSR.",
     tags: ["React", "3D", "Vite", "Playwright"],
@@ -44,6 +48,7 @@ export const overrides: Record<string, ProjectOverride> = {
       "Does the day of the month you run a SIP matter? A nightly pipeline simulates every date across 994 Indian mutual funds and solves each XIRR to find out.",
     tags: ["Data pipeline", "Finance", "Node"],
     image: "/projects/tithi.jpg",
+    liveUrl: "https://tithi.maxrecursion.dev",
   },
   f1analyst: {
     title: "F1 Analyst",

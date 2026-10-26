@@ -55,7 +55,7 @@ function toProject(repo: GitHubRepo): Project {
     title: o.title ?? repo.name,
     description: o.description ?? repo.description ?? "",
     url: repo.html_url,
-    liveUrl: liveUrlFor(repo),
+    liveUrl: o.liveUrl ?? liveUrlFor(repo),
     language: repo.language ?? undefined,
     tags: o.tags ?? topics.slice(0, 4),
     stars: repo.stargazers_count,
