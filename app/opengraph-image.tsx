@@ -23,8 +23,9 @@ export default function Image() {
       >
         <div style={{ fontSize: 30, color: "#a8a294", fontFamily: "monospace" }}>~/maxrecursion.dev</div>
         <div style={{ fontSize: 96, fontWeight: 700, marginTop: 20, letterSpacing: -3 }}>{site.name}</div>
-        <div style={{ display: "flex", fontSize: 38, color: "#cdc6b6", marginTop: 16 }}>
-          {`${site.role}. ${site.tagline}`}
+        <div style={{ display: "flex", fontSize: 40, color: "#ede8dc", marginTop: 20 }}>{site.headline}</div>
+        <div style={{ display: "flex", fontSize: 30, color: "#a8a294", marginTop: 16, maxWidth: 980 }}>
+          {site.summary}
         </div>
       </div>
     ),

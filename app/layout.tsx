@@ -16,22 +16,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const title = `${site.name} | ${site.role}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: `${site.name} · ${site.handle}`,
+  title: { default: title, template: `%s | ${site.name}` },
   description: site.description,
   alternates: { canonical: "/" },
   authors: [{ name: site.name, url: site.url }],
   openGraph: {
     type: "website",
     url: site.url,
-    siteName: site.handle,
-    title: `${site.name} · ${site.handle}`,
+    siteName: site.name,
+    title,
     description: site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} · ${site.handle}`,
+    title,
     description: site.description,
   },
 };
@@ -51,6 +53,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
+        <a
+          href="#main"
+          className="fixed left-4 top-4 z-[100] -translate-y-20 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition focus:translate-y-0"
+        >
+          Skip to content
+        </a>
+        <noscript>
+          <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
         <Providers>{children}</Providers>
         <Analytics />
         <SpeedInsights />
