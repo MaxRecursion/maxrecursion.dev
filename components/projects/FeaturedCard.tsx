@@ -17,16 +17,27 @@ function Placeholder({ project }: { project: Project }) {
   );
 }
 
-export function FeaturedCard({ project, priority = false }: { project: Project; priority?: boolean }) {
+export function FeaturedCard({
+  project,
+  priority = false,
+  wide = false,
+}: {
+  project: Project;
+  priority?: boolean;
+  /** Spans both grid columns from md up, with the image beside the text. */
+  wide?: boolean;
+}) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition hover:border-accent/60 hover:shadow-[0_0_0_1px_var(--accent),0_20px_60px_-30px_var(--accent)]">
+    <article
+      className={`group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition hover:border-accent/60 hover:shadow-[0_0_0_1px_var(--accent),0_20px_60px_-30px_var(--accent)] ${wide ? "md:h-full md:flex-row" : ""}`}
+    >
       <a
         href={project.liveUrl ?? project.url}
         target="_blank"
         rel="noreferrer"
         tabIndex={-1}
         aria-hidden="true"
-        className="relative block aspect-[2/1] overflow-hidden border-b border-border bg-background"
+        className={`relative block aspect-[2/1] overflow-hidden border-b border-border bg-background ${wide ? "md:aspect-auto md:min-h-[280px] md:w-1/2 md:shrink-0 md:border-b-0 md:border-r" : ""}`}
       >
         {project.image ? (
           <Image
@@ -41,7 +52,7 @@ export function FeaturedCard({ project, priority = false }: { project: Project; 
           <Placeholder project={project} />
         )}
       </a>
-      <div className="flex flex-1 flex-col p-6">
+      <div className={`flex flex-1 flex-col p-6 ${wide ? "md:justify-center md:p-10" : ""}`}>
         <div className="flex items-start justify-between gap-4">
           <h3 className="text-lg font-semibold tracking-tight">{project.title}</h3>
           {project.language && (

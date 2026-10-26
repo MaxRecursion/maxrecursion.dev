@@ -39,11 +39,15 @@ export default async function Home() {
 
         <Section id="projects" eyebrow="Selected work" title="Things I've built">
           <div className="grid gap-6 md:grid-cols-2">
-            {featuredProjects.map((p, i) => (
-              <Reveal key={p.name} delay={(i % 2) * 0.08}>
-                <FeaturedCard project={p} priority={i < 2} />
-              </Reveal>
-            ))}
+            {featuredProjects.map((p, i) => {
+              // An odd last card spans the row instead of sitting alone beside a gap.
+              const wide = i === featuredProjects.length - 1 && featuredProjects.length % 2 === 1;
+              return (
+                <Reveal key={p.name} delay={(i % 2) * 0.08} className={wide ? "md:col-span-2" : undefined}>
+                  <FeaturedCard project={p} priority={i < 2} wide={wide} />
+                </Reveal>
+              );
+            })}
           </div>
 
           <h3 className="mt-20 text-xl font-semibold tracking-tight">Everything else on GitHub</h3>

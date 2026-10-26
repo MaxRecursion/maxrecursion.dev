@@ -9,17 +9,10 @@ export type ProjectOverride = {
 };
 
 /** Featured projects, in display order. */
-export const featured = ["ActiveAero_F1", "AutoVerse", "DiskLens", "DataDrivenSIP", "f1analyst", "Xposter"];
+export const featured = ["ActiveAero_F1", "AutoVerse", "DataDrivenSIP", "Xposter", "DiskLens"];
 
-/** Repos left out of the site entirely. */
-export const hidden = [
-  "GithubActions",
-  "FirstAngular",
-  "ToDoList",
-  "Flasher-for-Windows-Phone",
-  // Its Pages site holds personal blood-report values; don't drive extra traffic to it.
-  "HealthVault",
-];
+/** Public repos left out of the site entirely. */
+export const hidden = ["HealthVault"];
 
 export const overrides: Record<string, ProjectOverride> = {
   ActiveAero_F1: {
@@ -65,12 +58,5 @@ export const overrides: Record<string, ProjectOverride> = {
     title: "CSV to Parquet",
     description:
       "A streaming service that converts multi-GB CSV files to Parquet with DuckDB, without ever holding a file in memory.",
-  },
-  FlasheraSmasher: {
-    description:
-      "A bot that reads X posts, picks the ones to reply to with predefined rules, and writes replies with Claude.",
-  },
-  ProgressTrackerWidget: {
-    title: "Progress Tracker Widget",
   },
 };
