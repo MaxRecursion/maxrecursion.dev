@@ -25,6 +25,8 @@ export const metadata: Metadata = {
   title: { default: title, template: `%s | ${site.name}` },
   description: site.description,
   alternates: { canonical: "/" },
+  // Google Search Console ownership (URL-prefix property). The token is public by design.
+  verification: { google: "3efd9CZKpEHsqFNbpOju7-S-ZUlIO60T7I3ueTkJb_M" },
   authors: [{ name: site.name, url: site.url }],
   openGraph: {
     type: "website",
