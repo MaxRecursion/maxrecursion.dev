@@ -12,6 +12,7 @@ export const csvToParquet: CaseStudy = {
     "An ASP.NET Core service that turns an uploaded CSV into a Parquet file. Both files stream through disk, so input size is limited by disk rather than memory, and DuckDB does the conversion in a single COPY statement.",
   finding:
     "A 3.2 GB CSV converted in about 20 s with peak server memory under 0.9 GB once DuckDB's limit was set to 1 GB (one run at a time, Apple M4).",
+  published: "2026-10-26",
   stack: [".NET 10", "ASP.NET Core", "DuckDB", "Parquet", "xUnit"],
   facts: [
     { label: "Hosting", value: "IIS in-process (uploads to ~4 GB) or a Windows Service on Kestrel (no cap)" },

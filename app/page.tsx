@@ -9,29 +9,19 @@ import { caseStudies } from "@/content/case-studies";
 import { site } from "@/content/site";
 import { trackClick } from "@/lib/analytics";
 import { getProjectFeed } from "@/lib/github";
+import { homeJsonLd, toJsonLd } from "@/lib/structured-data";
 
 export default async function Home() {
   const { featured, others } = await getProjectFeed();
   // An odd last card spans the row instead of sitting alone beside a gap.
   const oddCount = featured.length % 2 === 1;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: site.name,
-    alternateName: site.handle,
-    url: site.url,
-    jobTitle: site.role,
-    address: { "@type": "PostalAddress", addressLocality: "Pune", addressCountry: "IN" },
-    sameAs: [site.links.github, site.links.linkedin],
-    knowsAbout: site.skills,
-  };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(homeJsonLd()) }}
       />
       <Header />
       <main id="main">
@@ -84,7 +74,7 @@ export default async function Home() {
           </Section>
         )}
 
-        <Section id="about" eyebrow="About" title="Hi, I'm Akshay.">
+        <Section id="about" eyebrow="About" title={`Hi, I'm ${site.name}.`}>
           <div className="grid gap-12 md:grid-cols-[3fr_2fr]">
             <div className="space-y-4 text-lg leading-relaxed text-muted">
               {site.bio.map((para) => (

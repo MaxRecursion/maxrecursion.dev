@@ -12,6 +12,7 @@ export const f1Analyst: CaseStudy = {
     "The same million-row workload, queries and UI run against three Blazor WebAssembly engine topologies. The deciding measurement was not speed but whether the browser stayed responsive and the query could be cancelled.",
   finding:
     "The in-process engine had the fastest engine times but blocked the UI for 1,793 ms during a 1,780 ms query and could not be cancelled; the worker-based one cancelled in 74 ms.",
+  published: "2026-10-26",
   stack: ["Blazor WebAssembly", "DuckDB", "duckdb-wasm", "Emscripten", "Parquet"],
   facts: [
     { label: "Workload", value: "1,000,000 rows × 25 columns, synthetic" },

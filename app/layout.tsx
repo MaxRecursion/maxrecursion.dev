@@ -17,7 +17,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const title = `${site.name} | ${site.role}`;
+// The city disambiguates a common name in search results.
+const title = `${site.name} | ${site.role} in ${site.location.split(",")[0]}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),

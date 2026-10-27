@@ -33,6 +33,8 @@ export function Hero() {
           id="hero-title"
           className="mt-4 max-w-[680px] text-4xl font-semibold tracking-tight min-[480px]:text-5xl sm:text-6xl lg:text-7xl"
         >
+          {/* The name leads the heading for search engines and screen readers; visually the headline is unchanged. */}
+          <span className="sr-only">{site.name}: </span>
           {/* The gradient is clipped to each line's own text: WebKit paints nothing when the clipped
               element only holds animated children, so the lines are what rise, not the words. */}
           {site.hero.headline.map((line, i) => (

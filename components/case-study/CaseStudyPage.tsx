@@ -4,6 +4,7 @@ import { repoBase } from "@/content/case-studies";
 import { ArrowUpRight, GitHubIcon } from "@/components/icons";
 import { Footer, Header } from "@/components/sections";
 import { trackClick } from "@/lib/analytics";
+import { caseStudyJsonLd, toJsonLd } from "@/lib/structured-data";
 import { Flow } from "./Flow";
 
 function BlockView({ block }: { block: Block }) {
@@ -74,6 +75,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
   const sourceClick = trackClick({ name: "project_click", params: { project_name: study.repo, destination: "github" } });
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(caseStudyJsonLd(study)) }} />
       <Header />
       <main id="main" className="mx-auto max-w-3xl px-6 pb-24 pt-28 sm:pt-32">
         <nav aria-label="Breadcrumb" className="font-mono text-xs text-muted">

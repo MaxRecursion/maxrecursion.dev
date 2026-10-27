@@ -26,6 +26,8 @@ export type CaseStudy = {
   /** The single most useful result, with its conditions, for the homepage card. */
   finding: string;
   stack: string[];
+  /** ISO date the write-up was first published, for structured data. */
+  published: string;
   facts: { label: string; value: string }[];
   sections: Section[];
   /** Files in the repository that back the claims above. */
