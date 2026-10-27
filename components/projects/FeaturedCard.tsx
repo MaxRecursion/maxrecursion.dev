@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { trackClick } from "@/lib/analytics";
 import type { Project } from "@/lib/github";
 import { ArrowUpRight, GitHubIcon } from "@/components/icons";
 import { FlowPreview } from "./FlowPreview";
@@ -72,14 +73,29 @@ export function FeaturedCard({
         )}
         <div className="mt-auto flex flex-wrap gap-2 pt-6">
           {project.liveUrl && (
-            <a href={project.liveUrl} target="_blank" rel="noreferrer noopener" className={primary}>
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              className={primary}
+              {...trackClick({
+                name: "project_click",
+                params: { project_name: project.name, destination: project.liveLabel === "Download" ? "download" : "live_demo" },
+              })}
+            >
               {project.liveLabel} <ArrowUpRight className="size-3.5" />
               <span className="sr-only">
                 : {project.title} (opens in a new tab)
               </span>
             </a>
           )}
-          <a href={project.url} target="_blank" rel="noreferrer noopener" className={secondary}>
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            className={secondary}
+            {...trackClick({ name: "project_click", params: { project_name: project.name, destination: "github" } })}
+          >
             <GitHubIcon className="size-3.5" /> Source
             <span className="sr-only">
               : {project.title} on GitHub (opens in a new tab)

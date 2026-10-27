@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { site } from "@/content/site";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { ThemeToggle } from "@/components/theme";
+import { trackClick } from "@/lib/analytics";
 
 const navLink =
   "rounded-full px-2 py-3 text-muted transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-foreground sm:px-3";
@@ -75,6 +76,7 @@ export function Footer() {
             target="_blank"
             rel="noreferrer noopener"
             aria-label="GitHub (opens in a new tab)"
+            {...trackClick({ name: "social_click", params: { platform: "github" } })}
             className="grid size-11 place-items-center rounded-full hover:text-foreground"
           >
             <GitHubIcon className="size-5" />
@@ -84,6 +86,7 @@ export function Footer() {
             target="_blank"
             rel="noreferrer noopener"
             aria-label="LinkedIn (opens in a new tab)"
+            {...trackClick({ name: "social_click", params: { platform: "linkedin" } })}
             className="grid size-11 place-items-center rounded-full hover:text-foreground"
           >
             <LinkedInIcon className="size-5" />

@@ -7,6 +7,7 @@ import { TaglineReveal } from "@/components/TaglineReveal";
 import { Footer, Header, Section } from "@/components/sections";
 import { caseStudies } from "@/content/case-studies";
 import { site } from "@/content/site";
+import { trackClick } from "@/lib/analytics";
 import { getProjectFeed } from "@/lib/github";
 
 export default async function Home() {
@@ -74,6 +75,7 @@ export default async function Home() {
                 target="_blank"
                 rel="noreferrer noopener"
                 className="rounded text-accent underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
+                {...trackClick({ name: "social_click", params: { platform: "github" } })}
               >
                 All repositories on GitHub
                 <span className="sr-only"> (opens in a new tab)</span>

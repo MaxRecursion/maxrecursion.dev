@@ -35,7 +35,7 @@ New public repos appear on their own within an hour. A repo gets a **Live** link
 5. At your domain registrar, create the DNS records Vercel shows (an `A` record for the apex and a `CNAME` for `www`), or switch the nameservers to Vercel.
 6. `.dev` domains only work over HTTPS (HSTS preload). Vercel issues the certificate automatically once DNS resolves.
 
-Then turn on **Analytics** and **Speed Insights** in the Vercel project; the components are already in `app/layout.tsx`.
+Then turn on **Analytics** and **Speed Insights** in the Vercel project; the components are already in `app/layout.tsx`. Google Analytics 4 click events are off until `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set; see [ANALYTICS_SETUP.md](ANALYTICS_SETUP.md).
 
 ## Credits
 

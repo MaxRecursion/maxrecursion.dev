@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { site } from "@/content/site";
+import { trackClick } from "@/lib/analytics";
 import { ArrowDownIcon, GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { HeroBackground } from "./HeroBackground";
 import { LocalTime } from "./LocalTime";
@@ -63,11 +64,23 @@ export function Hero() {
             <p>{site.hero.proof}</p>
             <span aria-hidden="true" className="h-4 w-px bg-border" />
             <div className="-mx-2 flex items-center">
-              <a href={site.links.github} target="_blank" rel="noreferrer noopener" className={profileLink}>
+              <a
+                href={site.links.github}
+                target="_blank"
+                rel="noreferrer noopener"
+                className={profileLink}
+                {...trackClick({ name: "social_click", params: { platform: "github" } })}
+              >
                 <GitHubIcon className="size-5" />
                 <span className="sr-only">GitHub (opens in a new tab)</span>
               </a>
-              <a href={site.links.linkedin} target="_blank" rel="noreferrer noopener" className={profileLink}>
+              <a
+                href={site.links.linkedin}
+                target="_blank"
+                rel="noreferrer noopener"
+                className={profileLink}
+                {...trackClick({ name: "social_click", params: { platform: "linkedin" } })}
+              >
                 <LinkedInIcon className="size-5" />
                 <span className="sr-only">LinkedIn (opens in a new tab)</span>
               </a>

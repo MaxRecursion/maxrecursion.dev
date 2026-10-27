@@ -3,6 +3,7 @@ import type { Block, CaseStudy } from "@/content/case-studies";
 import { repoBase } from "@/content/case-studies";
 import { ArrowUpRight, GitHubIcon } from "@/components/icons";
 import { Footer, Header } from "@/components/sections";
+import { trackClick } from "@/lib/analytics";
 import { Flow } from "./Flow";
 
 function BlockView({ block }: { block: Block }) {
@@ -70,6 +71,7 @@ function BlockView({ block }: { block: Block }) {
 
 export function CaseStudyPage({ study }: { study: CaseStudy }) {
   const source = `${repoBase}/${study.repo}`;
+  const sourceClick = trackClick({ name: "project_click", params: { project_name: study.repo, destination: "github" } });
   return (
     <>
       <Header />
@@ -100,6 +102,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
                 href={source}
                 target="_blank"
                 rel="noreferrer noopener"
+                {...sourceClick}
                 className="inline-flex min-h-11 items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition hover:opacity-85"
               >
                 <GitHubIcon className="size-4" /> Source code
@@ -153,6 +156,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
                     href={`${source}/${/\.[a-z0-9]+$/i.test(e.path) ? "blob" : "tree"}/main/${e.path}`}
                     target="_blank"
                     rel="noreferrer noopener"
+                    {...sourceClick}
                     className="inline-flex items-center gap-1.5 rounded py-1 text-accent underline decoration-accent/50 underline-offset-4 hover:decoration-accent"
                   >
                     {e.label}

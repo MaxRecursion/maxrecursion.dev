@@ -2,13 +2,15 @@ import Link from "next/link";
 import type { CaseStudy } from "@/content/case-studies";
 import { repoBase } from "@/content/case-studies";
 import { ArrowUpRight, GitHubIcon } from "@/components/icons";
+import { trackClick } from "@/lib/analytics";
 
 export function CaseStudyCard({ study }: { study: CaseStudy }) {
+  const details = trackClick({ name: "project_click", params: { project_name: study.repo, destination: "project_details" } });
   return (
     <article className="flex h-full flex-col rounded-2xl border border-border bg-surface p-6 transition hover:border-accent/60 sm:p-8">
       <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-accent">Case study · {study.kicker}</p>
       <h3 className="mt-3 text-xl font-semibold tracking-tight">
-        <Link href={`/case-studies/${study.slug}`} className="rounded hover:underline hover:underline-offset-4">
+        <Link href={`/case-studies/${study.slug}`} className="rounded hover:underline hover:underline-offset-4" {...details}>
           {study.title}
         </Link>
       </h3>
@@ -28,6 +30,7 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
         <Link
           href={`/case-studies/${study.slug}`}
           className="inline-flex min-h-11 items-center gap-1 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition hover:opacity-85"
+          {...details}
         >
           Read the case study
           <span className="sr-only">: {study.kicker}</span>
@@ -38,6 +41,7 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
           target="_blank"
           rel="noreferrer noopener"
           className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium transition hover:border-accent"
+          {...trackClick({ name: "project_click", params: { project_name: study.repo, destination: "github" } })}
         >
           <GitHubIcon className="size-3.5" /> Source
           <ArrowUpRight className="size-3" />

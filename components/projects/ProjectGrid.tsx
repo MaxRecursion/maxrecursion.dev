@@ -1,3 +1,4 @@
+import { trackClick } from "@/lib/analytics";
 import type { Project } from "@/lib/github";
 import { ArrowUpRight, StarIcon } from "@/components/icons";
 
@@ -13,6 +14,10 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
             target="_blank"
             rel="noreferrer noopener"
             className="flex h-full flex-col rounded-xl border border-border bg-surface p-5 transition hover:border-accent/60"
+            {...trackClick({
+              name: "project_click",
+              params: { project_name: p.name, destination: p.liveUrl ? "live_demo" : "github" },
+            })}
           >
             <div className="flex items-center justify-between gap-3">
               <h3 className="truncate font-medium">{p.title}</h3>
