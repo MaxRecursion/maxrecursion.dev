@@ -7,7 +7,9 @@ import { site } from "@/content/site";
 export function GET() {
   const projects = featured.map((repo) => {
     const o = overrides[repo] ?? {};
-    const links = [o.liveUrl && `[${o.liveLabel ?? "Live"}](${o.liveUrl})`, `[Source](${site.links.github}/${repo})`]
+    // Apps hosted on a maxrecursion.dev subdomain publish their own, more detailed llms.txt.
+    const ownLlms = o.liveUrl?.endsWith(".maxrecursion.dev") && `[llms.txt](${o.liveUrl}/llms.txt)`;
+    const links = [o.liveUrl && `[${o.liveLabel ?? "Live"}](${o.liveUrl})`, `[Source](${site.links.github}/${repo})`, ownLlms]
       .filter(Boolean)
       .join(" · ");
     return `- **${o.title ?? repo}**: ${o.description ?? ""} ${links}`;
