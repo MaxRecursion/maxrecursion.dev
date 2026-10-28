@@ -25,6 +25,7 @@ export type Project = {
   url: string;
   liveUrl?: string;
   liveLabel: string;
+  technicalUrl?: string;
   language?: string;
   tags: string[];
   stars: number;
@@ -63,6 +64,7 @@ function toProject(repo: GitHubRepo): Project {
     url: repo.html_url,
     liveUrl: o.liveUrl ?? liveUrlFor(repo),
     liveLabel: o.liveLabel ?? "Live demo",
+    technicalUrl: o.technicalUrl,
     language: repo.language ?? undefined,
     tags: o.tags ?? (repo.topics ?? []).slice(0, 4),
     stars: repo.stargazers_count,
@@ -126,6 +128,7 @@ function fallbackProjects(): Project[] {
       url: repoUrl(name),
       liveUrl: o.liveUrl,
       liveLabel: o.liveLabel ?? "Live demo",
+      technicalUrl: o.technicalUrl,
       tags: o.tags ?? [],
       stars: 0,
       featured: true,

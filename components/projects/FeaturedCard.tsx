@@ -101,6 +101,18 @@ export function FeaturedCard({
               : {project.title} on GitHub (opens in a new tab)
             </span>
           </a>
+          {project.technicalUrl && (
+            <a
+              href={project.technicalUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              className={secondary}
+              {...trackClick({ name: "project_click", params: { project_name: project.name, destination: "project_details" } })}
+            >
+              Technical notes <ArrowUpRight className="size-3.5" />
+              <span className="sr-only">: {project.title} (opens in a new tab)</span>
+            </a>
+          )}
         </div>
       </div>
     </article>

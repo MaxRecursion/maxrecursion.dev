@@ -16,10 +16,12 @@ export type ProjectOverride = {
   liveUrl?: string;
   /** Button label for `liveUrl`. Defaults to "Live demo". */
   liveLabel?: string;
+  /** Source-backed architecture or integration notes. */
+  technicalUrl?: string;
 };
 
 /** Featured projects, in display order. */
-export const featured = ["ActiveAero_F1", "AutoVerse", "DataDrivenSIP", "Xposter", "DiskLens"];
+export const featured = ["Archeo", "ActiveAero_F1", "AutoVerse", "DataDrivenSIP", "Xposter", "DiskLens"];
 
 /** Repos that have a write-up under /case-studies. Shown in their own section, not in the grid. */
 export const caseStudyRepos = ["CSVToParquet", "f1analyst"];
@@ -28,6 +30,20 @@ export const caseStudyRepos = ["CSVToParquet", "f1analyst"];
 export const hidden = ["HealthVault"];
 
 export const overrides: Record<string, ProjectOverride> = {
+  Archeo: {
+    title: "Codebase Archaeologist — Jev-powered Change Impact Intelligence",
+    description:
+      "Explore a public repository's architecture and assess proposed changes using deterministic evidence and typed decisions from Jev by TypeSafe AI. Classification, potential impact and human-review recommendations stay tied to the evidence and its limits.",
+    highlight:
+      "Choice classifies changes, Score evaluates an ordered impact rubric, and Noul estimates the probability that review is warranted. Application policy stays in TypeScript; the public demo labels its mock decisions explicitly. Live Jev access requires server-side configuration.",
+    tags: ["React + Vite", "TypeScript", "Vercel", "Jev"],
+    flow: {
+      label: "Change impact workflow",
+      steps: ["Collect public change metadata", "Bound deterministic evidence", "Ask typed decision questions", "Show review policy and uncertainty"],
+    },
+    liveUrl: "https://archeo-sigma.vercel.app",
+    technicalUrl: "https://github.com/MaxRecursion/Archeo/blob/main/docs/jev-integration.md",
+  },
   ActiveAero_F1: {
     title: "UNSEEN",
     description:

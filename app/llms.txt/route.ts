@@ -9,7 +9,7 @@ export function GET() {
     const o = overrides[repo] ?? {};
     // Apps hosted on a maxrecursion.dev subdomain publish their own, more detailed llms.txt.
     const ownLlms = o.liveUrl?.endsWith(".maxrecursion.dev") && `[llms.txt](${o.liveUrl}/llms.txt)`;
-    const links = [o.liveUrl && `[${o.liveLabel ?? "Live"}](${o.liveUrl})`, `[Source](${site.links.github}/${repo})`, ownLlms]
+    const links = [o.liveUrl && `[${o.liveLabel ?? "Live"}](${o.liveUrl})`, `[Source](${site.links.github}/${repo})`, o.technicalUrl && `[Technical notes](${o.technicalUrl})`, ownLlms]
       .filter(Boolean)
       .join(" · ");
     return `- **${o.title ?? repo}**: ${o.description ?? ""} ${links}`;
