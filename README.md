@@ -20,7 +20,7 @@ pnpm dev
 | GitHub fetch and its failure handling | `lib/github.ts` |
 | Hero fluid simulation (WebGL2) | `components/hero/fluid/` |
 
-New public repos appear on their own within an hour. A repo gets a **Live** link from, in order: a `liveUrl` override in `content/projects.ts`, GitHub Pages, or a `homepage` field that points somewhere other than github.com. UNSEEN, AutoVerse and Tithi use `liveUrl` overrides and are hosted on Vercel at `unseen.`, `autoverse.` and `tithi.maxrecursion.dev`, each its own Vercel project connected to its repo.
+New public repos appear on their own within an hour. A repo gets a **Live** link from, in order: a `liveUrl` override in `content/projects.ts`, GitHub Pages, or a `homepage` field that points somewhere other than github.com. Archeo, UNSEEN, AutoVerse and Tithi use `liveUrl` overrides and are hosted on Vercel at `archeo.`, `unseen.`, `autoverse.` and `tithi.maxrecursion.dev`, each its own Vercel project connected to its repo.
 
 **If GitHub is unreachable** (rate limit, outage), the build and the page still succeed: the featured projects render from `content/projects.ts`, the "Everything else" list is hidden, and the fetch is retried after five minutes instead of an hour. Set `GITHUB_TOKEN` to avoid rate limits.
 

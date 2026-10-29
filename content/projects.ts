@@ -31,18 +31,17 @@ export const hidden = ["HealthVault"];
 
 export const overrides: Record<string, ProjectOverride> = {
   Archeo: {
-    title: "Codebase Archaeologist — Jev-powered Change Impact Intelligence",
+    title: "Archeo — Codebase Archaeologist",
     description:
-      "Explore a public repository's architecture and assess proposed changes using deterministic evidence and typed decisions from Jev by TypeSafe AI. Classification, potential impact and human-review recommendations stay tied to the evidence and its limits.",
+      "Turn public GitHub repositories into interactive architecture maps. Trace JavaScript and TypeScript imports, explore modules and packages, and inspect source at the exact commit analyzed.",
     highlight:
-      "Choice classifies changes, Score evaluates an ordered impact rubric, and Noul estimates the probability that review is warranted. Application policy stays in TypeScript; the public demo labels its mock decisions explicitly. Live Jev access requires server-side configuration.",
-    tags: ["React + Vite", "TypeScript", "Vercel", "Jev"],
-    flow: {
-      label: "Change impact workflow",
-      steps: ["Collect public change metadata", "Bound deterministic evidence", "Ask typed decision questions", "Show review policy and uncertainty"],
-    },
-    liveUrl: "https://archeo-sigma.vercel.app",
-    technicalUrl: "https://github.com/MaxRecursion/Archeo/blob/main/docs/jev-integration.md",
+      "Deterministic source parsing ties graph connections to files and lines, with SVG export. Change impact compares branches or commits using a free, explicitly simulated demo; live Jev decisions require operator setup.",
+    tags: ["React + Vite", "TypeScript", "React Flow", "Jev"],
+    image: "/projects/archeo.png",
+    imageAlt:
+      "Archeo's landing page with the 'Understand any codebase' headline, a GitHub repository form and an illustrative dependency graph.",
+    liveUrl: "https://archeo.maxrecursion.dev",
+    technicalUrl: "https://github.com/MaxRecursion/Archeo/blob/main/docs/ARCHITECTURE.md",
   },
   ActiveAero_F1: {
     title: "UNSEEN",
