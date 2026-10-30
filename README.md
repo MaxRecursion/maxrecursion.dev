@@ -18,7 +18,7 @@ pnpm dev
 | Case studies (one file each, plus shared types) | `content/case-studies/` and `app/case-studies/<slug>/` |
 | Screenshots for featured cards | `public/projects/` |
 | GitHub fetch and its failure handling | `lib/github.ts` |
-| Hero fluid simulation (WebGL2) | `components/hero/fluid/` |
+| Still desert hero and homepage art direction | `components/hero/` and `app/home.module.css` |
 
 New public repos appear on their own within an hour. A repo gets a **Live** link from, in order: a `liveUrl` override in `content/projects.ts`, GitHub Pages, or a `homepage` field that points somewhere other than github.com. Archeo, UNSEEN, AutoVerse and Tithi use `liveUrl` overrides and are hosted on Vercel at `archeo.`, `unseen.`, `autoverse.` and `tithi.maxrecursion.dev`, each its own Vercel project connected to its repo.
 
@@ -37,6 +37,8 @@ New public repos appear on their own within an hour. A repo gets a **Live** link
 
 Then turn on **Analytics** and **Speed Insights** in the Vercel project; the components are already in `app/layout.tsx`. Google Analytics 4 click events are off until `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set; see [ANALYTICS_SETUP.md](ANALYTICS_SETUP.md).
 
-## Credits
+## Design
 
-The fluid solver follows Jos Stam's *Stable Fluids* and the approach popularised by Pavel Dobryakov's WebGL-Fluid-Simulation.
+The homepage uses an original, AI-generated desert eclipse landscape, with restrained Dune-inspired colors and a still background. Geist and Geist Mono, all portfolio content, and project destinations are preserved. Homepage styling is scoped in `app/home.module.css`; case-study pages retain their existing layout. Entrance effects respect reduced-motion preferences.
+
+Reference direction: [Evan Reiser](https://www.evanreiser.com). Reference review and motion scoping followed the [Reanimate skill](https://github.com/NiazMorshed2007/reanimate/blob/main/skills/reanimate/SKILL.md).

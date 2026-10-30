@@ -7,7 +7,7 @@ import { trackClick } from "@/lib/analytics";
 export function CaseStudyCard({ study }: { study: CaseStudy }) {
   const details = trackClick({ name: "project_click", params: { project_name: study.repo, destination: "project_details" } });
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-border bg-surface p-6 transition hover:border-accent/60 sm:p-8">
+    <article data-case-study className="flex h-full flex-col rounded-2xl border border-border bg-surface p-6 transition hover:border-accent/60 sm:p-8">
       <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-accent">Case study · {study.kicker}</p>
       <h3 className="mt-3 text-xl font-semibold tracking-tight">
         <Link href={`/case-studies/${study.slug}`} className="rounded hover:underline hover:underline-offset-4" {...details}>

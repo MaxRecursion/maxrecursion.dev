@@ -41,6 +41,7 @@ export function FeaturedCard({
 }) {
   return (
     <article
+      data-featured-project
       className={`group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition hover:border-accent/60 ${wide ? "md:flex-row" : ""}`}
     >
       <div

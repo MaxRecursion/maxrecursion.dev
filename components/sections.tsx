@@ -11,7 +11,7 @@ const navLink =
 // A compact translucent pill that floats off the top edge, sized to its content.
 export function Header() {
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-4 z-50 flex justify-center px-4">
+    <header data-site-header className="pointer-events-none fixed inset-x-0 top-4 z-50 flex justify-center px-4">
       <div
         className="hero-rise pointer-events-auto flex items-center gap-1 rounded-full border border-border bg-background/60 py-1 pl-3 pr-1 backdrop-blur-xl sm:pl-4"
         style={{ "--rise-delay": "0ms" } as React.CSSProperties}
@@ -52,7 +52,7 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="mx-auto max-w-5xl scroll-mt-20 px-6 py-16 sm:py-24">
+    <section data-portfolio-section id={id} aria-labelledby={`${id}-title`} className="mx-auto max-w-5xl scroll-mt-20 px-6 py-16 sm:py-24">
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{eyebrow}</p>
       <h2 id={`${id}-title`} className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
         {title}
@@ -64,7 +64,7 @@ export function Section({
 
 export function Footer() {
   return (
-    <footer className="border-t border-border">
+    <footer data-site-footer className="border-t border-border">
       <div className="mx-auto flex max-w-5xl flex-col gap-3 px-6 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
         <p>
           {site.name} · {site.location}

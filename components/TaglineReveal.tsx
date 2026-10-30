@@ -38,7 +38,7 @@ export function TaglineReveal({ text, eyebrow }: { text: string; eyebrow: string
   }, []);
 
   return (
-    <section aria-label="Tagline" className="mx-auto max-w-5xl px-6 py-24 sm:py-40">
+    <section data-portfolio-statement aria-label="Tagline" className="mx-auto max-w-5xl px-6 py-24 sm:py-40">
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{eyebrow}</p>
       <p ref={ref} className="mt-6 max-w-[680px] text-4xl font-semibold tracking-tight text-pretty sm:text-5xl">
         {words.map((word, i) => (

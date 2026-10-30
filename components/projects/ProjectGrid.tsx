@@ -6,7 +6,7 @@ const monthYear = new Intl.DateTimeFormat("en", { month: "short", year: "numeric
 
 export function ProjectGrid({ projects }: { projects: Project[] }) {
   return (
-    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <ul data-repository-grid className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {projects.map((p) => (
         <li key={p.name}>
           <a

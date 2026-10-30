@@ -1,19 +1,20 @@
-"use client";
+import Image from "next/image";
+import styles from "@/app/home.module.css";
 
-import dynamic from "next/dynamic";
-
-// WebGL only runs in the browser, and loading it lazily keeps it off the critical path.
-const FluidCanvas = dynamic(() => import("./FluidCanvas"), { ssr: false });
-
+/** A still landscape: no canvas, animation loop, or pointer tracking. */
 export function HeroBackground() {
   return (
-    <>
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(60%_50%_at_30%_40%,color-mix(in_srgb,var(--accent)_14%,transparent),transparent_70%),radial-gradient(50%_45%_at_75%_65%,color-mix(in_srgb,var(--accent-2)_10%,transparent),transparent_70%)]"
+    <div aria-hidden="true" className={styles.landscape}>
+      <Image
+        src="/images/desert-eclipse.webp"
+        alt=""
+        fill
+        preload
+        sizes="100vw"
+        className={styles.desertImage}
       />
-      <FluidCanvas />
-      <div aria-hidden="true" className="grain pointer-events-none absolute inset-0" />
-    </>
+      <div className={styles.landscapeShade} />
+      <div className={`grain ${styles.landscapeGrain}`} />
+    </div>
   );
 }

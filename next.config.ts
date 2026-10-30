@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   turbopack: {
     rules: {
       "*.css": {
+        // Keep CSS Modules on Next's native scoped-CSS path.
+        condition: { not: { path: /\.module\.css$/ } },
         loaders: ["@tailwindcss/turbopack"],
         as: "*.css",
       },

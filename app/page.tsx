@@ -10,6 +10,7 @@ import { site } from "@/content/site";
 import { trackClick } from "@/lib/analytics";
 import { getProjectFeed } from "@/lib/github";
 import { homeJsonLd, toJsonLd } from "@/lib/structured-data";
+import styles from "./home.module.css";
 
 export default async function Home() {
   const { featured, others } = await getProjectFeed();
@@ -18,7 +19,7 @@ export default async function Home() {
 
 
   return (
-    <>
+    <div className={styles.home}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: toJsonLd(homeJsonLd()) }}
@@ -110,6 +111,6 @@ export default async function Home() {
         </Section>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

@@ -1,0 +1,464 @@
+/* Homepage-only art direction. Shared case-study pages retain their original theme. */
+.home {
+  --background: #f1eadc;
+  --foreground: #29251f;
+  --muted: #6d6254;
+  --surface: #f6f0e5;
+  --border: #d9cdbb;
+  --accent: #815522;
+  --accent-2: #80663f;
+  --hero-secondary: #856a46;
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
+:global(.dark) .home {
+  --background: #11110f;
+  --foreground: #eae3d4;
+  --muted: #a59c8d;
+  --surface: #171612;
+  --border: #343026;
+  --accent: #c5a170;
+  --accent-2: #b89560;
+  --hero-secondary: #bc9b6c;
+}
+
+.home [data-site-header] {
+  top: 0;
+  padding-inline: 40px;
+  background: color-mix(in srgb, var(--background) 88%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.home [data-site-header] > div {
+  width: 100%;
+  max-width: 1200px;
+  justify-content: space-between;
+  padding: 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.home [data-site-header] nav {
+  gap: 20px;
+  font-size: 12px;
+}
+
+.home [data-site-header] nav button {
+  width: 36px;
+  height: 36px;
+  margin-left: 12px;
+  border: 0;
+  background: transparent;
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: max(780px, 100svh);
+  overflow: hidden;
+  padding: 140px 40px 130px;
+  border-bottom: 1px solid var(--border);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.marker {
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+
+.headline {
+  max-width: 760px;
+  margin-top: 30px;
+  font-size: clamp(48px, 5.5vw, 80px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+}
+
+.headline > span:not(:global(.sr-only)) {
+  display: block;
+}
+
+.secondaryLine {
+  color: var(--hero-secondary);
+}
+
+.headline > span:nth-last-child(2) {
+  margin-top: 12px;
+}
+
+.intro {
+  max-width: 535px;
+  margin-top: 28px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.85;
+  text-wrap: pretty;
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.projectLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--background) 65%, transparent);
+  font-size: 13px;
+  transition: background 200ms, border-color 200ms;
+}
+
+.projectLink:hover {
+  border-color: var(--foreground);
+  background: var(--surface);
+}
+
+.socialLinks {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.profileLink {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: var(--muted);
+  transition: color 200ms;
+}
+
+.profileLink:hover {
+  color: var(--foreground);
+}
+
+.landscape {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.desertImage {
+  object-fit: cover;
+  object-position: 72% center;
+  opacity: 0.25;
+}
+
+:global(.dark) .desertImage {
+  opacity: 0.8;
+}
+
+.landscapeShade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--background) 0%, color-mix(in srgb, var(--background) 94%, transparent) 24%, color-mix(in srgb, var(--background) 70%, transparent) 44%, transparent 76%),
+    linear-gradient(180deg, var(--background) 0%, transparent 22%, transparent 63%, var(--background) 100%);
+}
+
+.landscapeGrain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+}
+
+.heroFoot {
+  position: absolute;
+  inset: auto 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1200px;
+  min-height: 74px;
+  margin-inline: auto;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.statusDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.scrollLink {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 44px;
+  transition: color 200ms;
+}
+
+.scrollLink:hover {
+  color: var(--foreground);
+}
+
+.home [data-portfolio-statement],
+.home [data-portfolio-section] {
+  max-width: 1280px;
+  padding-inline: 40px;
+}
+
+.home [data-portfolio-statement] {
+  padding-block: 120px;
+}
+
+.home [data-portfolio-statement] > p:first-child,
+.home [data-portfolio-section] > p:first-child {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+}
+
+.home [data-portfolio-statement] > p:last-child {
+  max-width: 870px;
+  font-size: clamp(30px, 3.8vw, 48px);
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.home [data-portfolio-section] {
+  padding-top: 48px;
+  padding-bottom: 100px;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 100px;
+}
+
+.home [data-portfolio-section] > h2 {
+  margin-top: 16px;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 400;
+}
+
+.home [data-featured-project],
+.home [data-case-study] {
+  border-radius: 3px;
+  background: var(--surface);
+}
+
+.home [data-featured-project] > div:first-child {
+  aspect-ratio: 16 / 9;
+}
+
+.home [data-featured-project] h3,
+.home [data-case-study] h3 {
+  font-weight: 500;
+}
+
+.home [data-featured-project] a,
+.home [data-case-study] a:not(h3 a) {
+  border-radius: 2px;
+}
+
+.home [data-featured-project] li,
+.home [data-case-study] li {
+  border: 0;
+  border-radius: 0;
+  padding: 0 10px 0 0;
+  font-size: 10px;
+}
+
+.home [data-repository-grid] {
+  column-gap: 28px;
+  row-gap: 0;
+}
+
+.home [data-repository-grid] > li > a {
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  padding: 24px 0;
+}
+
+.home [data-repository-grid] > li > a:hover h3 {
+  color: var(--accent);
+}
+
+.home [data-portfolio-section]:last-child li {
+  border-radius: 2px;
+}
+
+.home [data-site-footer] > div {
+  max-width: 1280px;
+  padding-inline: 40px;
+  padding-block: 32px;
+  font-size: 12px;
+}
+
+@media (min-width: 1440px) {
+  .hero {
+    min-height: max(860px, 100svh);
+  }
+}
+
+@media (max-width: 767px) {
+  .home [data-site-header] {
+    padding-inline: 22px;
+  }
+
+  .home [data-site-header] > div > a {
+    font-size: 12px;
+  }
+
+  .home [data-site-header] nav {
+    gap: 0;
+    font-size: 11px;
+  }
+
+  .home [data-site-header] nav button {
+    margin-left: 4px;
+  }
+
+  .hero {
+    min-height: max(790px, 100svh);
+    padding: 135px 24px 130px;
+  }
+
+  .headline {
+    margin-top: 25px;
+    font-size: clamp(34px, 10.5vw, 62px);
+  }
+
+  .heroActions {
+    gap: 12px;
+  }
+
+  .projectLink {
+    gap: 16px;
+    padding-inline: 12px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .profileLink {
+    width: 40px;
+  }
+
+  .intro {
+    max-width: 440px;
+    font-size: 13px;
+  }
+
+  .desertImage {
+    object-position: 67% center;
+    opacity: 0.14;
+  }
+
+  :global(.dark) .desertImage {
+    opacity: 0.48;
+  }
+
+  .landscapeShade {
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--background) 86%, transparent), color-mix(in srgb, var(--background) 48%, transparent)),
+      linear-gradient(180deg, var(--background), transparent 35%, transparent 60%, var(--background));
+  }
+
+  .heroFoot {
+    inset-inline: 24px;
+    flex-wrap: wrap;
+    gap: 0 16px;
+    padding-block: 14px;
+    font-size: 9px;
+  }
+
+  .proof {
+    order: 1;
+    width: 100%;
+    padding-bottom: 6px;
+  }
+
+  .scrollLink {
+    gap: 8px;
+  }
+
+  .home [data-portfolio-statement],
+  .home [data-portfolio-section],
+  .home [data-site-footer] > div {
+    padding-inline: 24px;
+  }
+
+  .home [data-portfolio-statement] {
+    padding-block: 80px;
+  }
+
+  .home [data-portfolio-section] {
+    padding-top: 32px;
+    padding-bottom: 64px;
+  }
+}
+
+@media (max-width: 359px) {
+  .home [data-site-header] > div > a {
+    font-size: 11px;
+  }
+
+  .home [data-site-header] nav {
+    font-size: 10px;
+  }
+
+  .home [data-site-header] nav > a {
+    padding-inline: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home :global(.hero-rise) {
+    animation: none;
+  }
+
+  .home *,
+  .home *::before,
+  .home *::after {
+    transition: none;
+  }
+}
