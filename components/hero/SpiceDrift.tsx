@@ -18,6 +18,8 @@ type Grain = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+const PARTICLE_MULTIPLIER = 3;
+const MOTION_MULTIPLIER = 2;
 
 /** Sparse 2D grains confined to the dunes; a local gust never captures the pointer. */
 export function SpiceDrift({ running }: { running: boolean }) {
@@ -61,8 +63,8 @@ export function SpiceDrift({ running }: { running: boolean }) {
         seed = (seed * 16807) % 2147483647;
         return (seed - 1) / 2147483646;
       };
-      grains = Array.from({ length: compact ? 48 : 110 }, () => {
-        const speed = 7 + random() * 12;
+      grains = Array.from({ length: (compact ? 48 : 110) * PARTICLE_MULTIPLIER }, () => {
+        const speed = (7 + random() * 12) * MOTION_MULTIPLIER;
         const grain: Grain = {
           x: random() * width,
           y: 0,
@@ -120,10 +122,10 @@ export function SpiceDrift({ running }: { running: boolean }) {
 
         for (const grain of grains) {
           const gust = getSpiceGust(grain.x, grain.y, pointer);
-          grain.vx += (grain.speed - grain.vx) * settle + gust.x * dt;
-          grain.vy += ((duneHeight(grain) - grain.y) * 0.8 - grain.vy) * settle + gust.y * dt;
-          grain.vx = clamp(grain.vx, -30, 65);
-          grain.vy = clamp(grain.vy, -45, 45);
+          grain.vx += (grain.speed - grain.vx) * settle + gust.x * dt * MOTION_MULTIPLIER;
+          grain.vy += ((duneHeight(grain) - grain.y) * 0.8 - grain.vy) * settle + gust.y * dt * MOTION_MULTIPLIER;
+          grain.vx = clamp(grain.vx, -30 * MOTION_MULTIPLIER, 65 * MOTION_MULTIPLIER);
+          grain.vy = clamp(grain.vy, -45 * MOTION_MULTIPLIER, 45 * MOTION_MULTIPLIER);
           grain.x += grain.vx * dt;
           grain.y += grain.vy * dt;
           if (grain.x > width + 24) grain.x = -24;
