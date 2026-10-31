@@ -1,0 +1,37 @@
+.sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 58%);
+}
+
+.clouds {
+  object-fit: cover;
+  object-position: 72% center;
+  transform: translate3d(-1.5%, -0.4%, 0) scale(1.06);
+  animation: drift 120s ease-in-out alternate infinite;
+  animation-play-state: var(--atmosphere-play-state, paused);
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(-1.5%, -0.4%, 0) scale(1.06);
+  }
+
+  to {
+    transform: translate3d(1.5%, 0.4%, 0) scale(1.06);
+  }
+}
+
+@media (max-width: 767px) {
+  .clouds {
+    object-position: 67% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky {
+    display: none;
+  }
+}

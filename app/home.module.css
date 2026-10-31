@@ -176,14 +176,35 @@
   user-select: none;
 }
 
-.desertImage {
-  object-fit: cover;
-  object-position: 72% center;
+.atmosphere,
+.desertScene {
+  position: absolute;
+  inset: 0;
+}
+
+.desertScene {
   opacity: 0.25;
 }
 
-:global(.dark) .desertImage {
+.desertImage {
+  object-fit: cover;
+  object-position: 72% center;
+}
+
+:global(.dark) .desertScene {
   opacity: 0.8;
+}
+
+.spiceCanvas {
+  position: absolute;
+  top: 56%;
+  right: 0;
+  bottom: 10%;
+  width: 66%;
+  height: 34%;
+  pointer-events: none;
+  opacity: 0.7;
+  mask-image: linear-gradient(90deg, transparent, #000 20%, #000 94%, transparent);
 }
 
 /* Interpolate clock coordinates, so resizing the viewport itself stays instant. */
@@ -459,11 +480,19 @@
 
   .desertImage {
     object-position: 67% center;
+  }
+
+  .desertScene {
     opacity: 0.14;
   }
 
-  :global(.dark) .desertImage {
+  :global(.dark) .desertScene {
     opacity: 0.48;
+  }
+
+  .spiceCanvas {
+    width: 100%;
+    opacity: 0.4;
   }
 
   .solarPosition {
@@ -531,6 +560,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .spiceCanvas {
+    display: none;
+  }
+
   .home :global(.hero-rise) {
     animation: none;
   }
