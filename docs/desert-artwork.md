@@ -1,6 +1,6 @@
 # Desert hero artwork
 
-The homepage uses `public/images/desert-eclipse.webp`, an original static image generated with the built-in ImageGen tool and converted to WebP with Sharp. It is 1672 × 941 pixels and approximately 47 KB. The PNG source is retained locally in the ignored `.reanimate/dune-home/` evidence folder.
+The homepage uses `public/images/desert-sky.webp`, an original landscape generated and edited with the built-in ImageGen tool and converted to WebP with Sharp. It is 1672 × 941 pixels and approximately 43 KB. The sun is rendered separately in CSS so its position, warmth, brightness and eclipse can react to the clock and theme. The original `public/images/desert-eclipse.webp` is retained as the earlier design source. PNG sources are retained locally in the ignored `.reanimate/dune-home/` evidence folder.
 
 ## Generation prompt
 
@@ -17,3 +17,7 @@ Lighting/mood: contemplative dusk, deep shadows, distant low-contrast horizon, s
 Color palette: charcoal black and muted bronze/ochre, low saturation and restrained luminosity, dark warm sky; no bright orange poster treatment.
 
 Constraints: landscape only, no people, no spaceships, no buildings or architecture, no text, no lettering, no logos, no UI, no watermark. Keep left half very dark and uncluttered. Do not include any typography. Wide 16:9 composition.
+
+## Sky separation edit prompt
+
+Edit the provided desert hero landscape only to remove the baked-in dark sun/eclipse and its nearby bright circular sky glow. Fill that exact region with seamless subtly hazy dark dusk sky matching the surrounding bronze-charcoal sky. Preserve the existing dunes, every dune ridge and sand texture, horizon position, low horizon warmth, fine film grain, scene composition, image dimensions, and overall colors and exposure. This is an asset preparation edit for a website: the sky must contain no sun or eclipse because an independent animated sun will be rendered later in code. Retain the dark empty sky on the left half and the existing subtle warm light near the distant right horizon. No sun, moon, stars, disks, rings, text, people, new objects, buildings, or logos. Do not redesign, reframe, brighten, or otherwise change the landscape.

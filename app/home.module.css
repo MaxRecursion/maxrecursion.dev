@@ -186,6 +186,75 @@
   opacity: 0.8;
 }
 
+/* Interpolate clock coordinates, so resizing the viewport itself stays instant. */
+@property --portfolio-sun-x {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 77;
+}
+
+@property --portfolio-sun-y {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 42;
+}
+
+.skyCycle {
+  position: absolute;
+  inset: 0;
+  /* The sun slips into the haze at the dune horizon. */
+  mask-image: linear-gradient(#000 0%, #000 56%, transparent 65%);
+}
+
+.solarPosition {
+  position: absolute;
+  left: calc(var(--portfolio-sun-x) * 1%);
+  top: calc(var(--portfolio-sun-y) * 1%);
+  width: clamp(80px, 9vw, 126px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  opacity: var(--sun-strength);
+  transition: --portfolio-sun-x 60s linear, --portfolio-sun-y 60s linear, opacity 4s ease;
+}
+
+.solarHalo {
+  position: absolute;
+  inset: -135%;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--sun-hue) 86% 66% / 0.5), hsl(var(--sun-hue) 70% 52% / 0.15) 30%, transparent 66%);
+  opacity: var(--sun-glow);
+  transition: opacity 4s ease;
+}
+
+.solarDisc {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fff5d9 5%, hsl(var(--sun-hue) 85% 77%) 50%, hsl(var(--sun-hue) 66% 55%));
+  box-shadow: 0 0 20px hsl(var(--sun-hue) 85% 73% / 0.4), 0 0 70px hsl(var(--sun-hue) 85% 58% / 0.2);
+  transition: box-shadow 1.2s ease;
+}
+
+.solarOcclusion {
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 65% 30%, #211c16, #0e0e0c 75%);
+  opacity: 0;
+  transform: translate(-65%, -50%) scale(0.2);
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease;
+}
+
+:global(.dark) .solarDisc {
+  box-shadow: -3px 2px 12px hsl(var(--sun-hue) 90% 78% / 0.6), 0 0 45px hsl(var(--sun-hue) 82% 55% / 0.18);
+}
+
+:global(.dark) .solarOcclusion {
+  opacity: 1;
+  transform: none;
+}
+
 .landscapeShade {
   position: absolute;
   inset: 0;
@@ -395,6 +464,16 @@
 
   :global(.dark) .desertImage {
     opacity: 0.48;
+  }
+
+  .solarPosition {
+    left: calc(60% + (var(--portfolio-sun-x) - 68) * 1.388889%);
+    top: calc(70px + var(--portfolio-sun-y) * 1.5px);
+    width: 64px;
+  }
+
+  .solarHalo {
+    inset: -100%;
   }
 
   .landscapeShade {
