@@ -37,10 +37,9 @@ export const overrides: Record<string, ProjectOverride> = {
     highlight:
       "SwiftUI and TextKit 2 over the installed Git CLI, with unmerged-index validation, stale-state protection and local conflict-draft recovery. Engineering preview; signed distribution and broader parity remain in progress.",
     tags: ["Swift 6", "SwiftUI", "AppKit", "Git CLI"],
-    flow: {
-      label: "Visual conflict resolution",
-      steps: ["Read Git index", "Compare versions", "Edit and stage", "Explicitly continue"],
-    },
+    image: "/projects/gitflow-studio.jpg",
+    imageAlt:
+      "GitFlow Studio's merge workspace: the current and incoming versions of a conflicted Swift file side by side, with the merged result below and buttons to use current, use incoming or keep both.",
     technicalUrl: "https://github.com/MaxRecursion/gitflow-studio/blob/main/ARCHITECTURE.md",
   },
   Archeo: {
