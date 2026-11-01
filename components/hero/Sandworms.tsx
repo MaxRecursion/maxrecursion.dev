@@ -6,6 +6,7 @@ import { COMPACT_QUERY, DESERT_FOCUS, coverTransform, samplePath, type Cover, ty
 import { bodyRadius, spineHeight, wormPose, type WormId, type WormPose } from "@/lib/sandworms";
 import styles from "@/app/home.module.css";
 import { getSummons } from "./thumper";
+import { watchDensity } from "./watchDensity";
 import { getWormTracks, wormClock, type WormTrack } from "./wormTracks";
 
 /** Spine samples per worm, head to tail: enough for several per body ring. */
@@ -203,8 +204,11 @@ export function Sandworms({ running, still }: { running: boolean; still: boolean
       height = canvas.offsetHeight;
       if (!width || !height) return;
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(width * ratio);
-      canvas.height = Math.round(height * ratio);
+      // Reassigning the size wipes the bitmap, so only when it really changes.
+      if (canvas.width !== Math.round(width * ratio) || canvas.height !== Math.round(height * ratio)) {
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+      }
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
       cover = coverTransform(host.clientWidth, host.clientHeight, compactQuery.matches ? DESERT_FOCUS.compact : DESERT_FOCUS.wide);
       offsetX = canvas.offsetLeft;
@@ -579,8 +583,9 @@ export function Sandworms({ running, still }: { running: boolean; still: boolean
     };
 
     const loop = (now: number) => {
-      // Draw at most 30 times a second; the loop stops entirely when unseen.
-      if (width && height && (!lastPaint || now - lastPaint >= 1000 / 30)) {
+      // Draw about 30 times a second (with slack so a 60 Hz display paints every other
+      // frame); the loop stops entirely when unseen.
+      if (width && height && (!lastPaint || now - lastPaint >= 1000 / 30 - 2)) {
         const dt = lastPaint ? Math.min((now - lastPaint) / 1000, 0.05) : 1 / 30;
         lastPaint = now;
         paint(wormClock(), dt);
@@ -588,9 +593,10 @@ export function Sandworms({ running, still }: { running: boolean; still: boolean
       frame = window.requestAnimationFrame(loop);
     };
 
+    // Resize observations land after the frame's paint, so draw again straight away.
     const redraw = () => {
       resize();
-      if (still) paint(0, 0);
+      if (width && height) paint(still ? 0 : wormClock(), 0);
     };
 
     redraw();
@@ -598,12 +604,14 @@ export function Sandworms({ running, still }: { running: boolean; still: boolean
     observer.observe(canvas);
     observer.observe(host);
     compactQuery.addEventListener("change", redraw);
+    const unwatchDensity = watchDensity(redraw);
     document.fonts?.ready.then(keepClearOfText).catch(() => {});
     if (running) frame = window.requestAnimationFrame(loop);
     return () => {
       window.cancelAnimationFrame(frame);
       observer.disconnect();
       compactQuery.removeEventListener("change", redraw);
+      unwatchDensity();
       context.clearRect(0, 0, width, height);
     };
   }, [running, still, resolvedTheme]);

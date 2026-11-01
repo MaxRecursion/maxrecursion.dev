@@ -12,6 +12,7 @@ import {
 } from "@/lib/spice-flow";
 import { getSpiceGust, type SpicePointer } from "@/lib/spice-wind";
 import styles from "@/app/home.module.css";
+import { watchDensity } from "./watchDensity";
 
 const INK = { dark: "218, 176, 111", light: "139, 88, 38" } as const;
 const TAU = Math.PI * 2;
@@ -133,9 +134,14 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string) {
     field = createField(0);
     if (!width || !height || !scene.width || !scene.height) return;
     const ratio = Math.min(window.devicePixelRatio || 1, compact.matches ? 1 : 1.5);
-    canvas.width = Math.round(width * ratio);
-    canvas.height = Math.round(height * ratio);
+    // Reassigning the size wipes the bitmap, so only when it really changes; otherwise clear it,
+    // since the dirty rectangle starts over below.
+    if (canvas.width !== Math.round(width * ratio) || canvas.height !== Math.round(height * ratio)) {
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+    }
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    context.clearRect(0, 0, width, height);
     left = top = right = bottom = 0;
 
     // The artwork is laid out with object-fit: cover in the parent; map it into this canvas.
@@ -171,6 +177,9 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string) {
     spans = layout.spans;
     pointer.active = false;
     canvas.dataset.interacting = "false";
+    // Resize observations land after the frame's paint, so draw the new field straight away.
+    advance(0);
+    draw();
   };
 
   const move = (event: PointerEvent) => {
@@ -360,6 +369,7 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string) {
   observer.observe(canvas);
   if (canvas.parentElement) observer.observe(canvas.parentElement);
   compact.addEventListener("change", resize);
+  const unwatchDensity = watchDensity(resize);
   hero.addEventListener("pointermove", move, { passive: true });
   hero.addEventListener("pointerleave", leave);
   hero.addEventListener("pointercancel", leave);
@@ -370,6 +380,7 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string) {
     window.cancelAnimationFrame(frame);
     observer.disconnect();
     compact.removeEventListener("change", resize);
+    unwatchDensity();
     hero.removeEventListener("pointermove", move);
     hero.removeEventListener("pointerleave", leave);
     hero.removeEventListener("pointercancel", leave);

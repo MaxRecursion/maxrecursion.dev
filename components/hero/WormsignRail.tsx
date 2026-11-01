@@ -10,6 +10,7 @@ import {
 import styles from "./WormsignRail.module.css";
 import { getSummons, plantThumper, subscribeSummons } from "./thumper";
 import { useAnimationGate } from "./useAnimationGate";
+import { watchDensity } from "./watchDensity";
 import { getWormTracks, wormClock } from "./wormTracks";
 
 /** CSS px the pen swings either side of the baseline at full scale. */
@@ -88,19 +89,20 @@ export function WormsignRail() {
         wormsign
       </p>
       <canvas ref={paper} aria-hidden="true" className={styles.paper} />
-      {/* Stays focusable while Shai-Hulud answers; plantThumper ignores clicks until then. */}
+      {/* Stays focusable while Shai-Hulud answers (plantThumper ignores clicks until then), and the
+          visible label starts its accessible name in every phase, for speech input. */}
       <button
         type="button"
-        aria-label="Plant a thumper to call the sandworm"
         aria-disabled={phase !== "ready"}
         data-phase={phase}
         className={styles.thumper}
         onClick={() => plantThumper()}
       >
         {LABELS[phase]}
+        {phase === "ready" && <span className="sr-only"> to call the sandworm</span>}
       </button>
       <p role="status" aria-live="polite" className="sr-only">
-        {phase === "answering" ? "Shai-Hulud answers." : ""}
+        {phase === "beating" ? "Thumper planted." : phase === "answering" ? "Shai-Hulud answers." : ""}
       </p>
     </div>
   );
@@ -205,15 +207,7 @@ function recordWormsign(canvas: HTMLCanvasElement, roll: RefObject<TraceStrip | 
     frame = window.requestAnimationFrame(loop);
   };
 
-  // A move to a screen of another pixel density changes no CSS size, so the observer below never sees it.
-  let density = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
-  const rescale = () => {
-    density.removeEventListener("change", rescale);
-    density = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
-    density.addEventListener("change", rescale);
-    resize();
-  };
-  density.addEventListener("change", rescale);
+  const unwatchDensity = watchDensity(resize);
 
   // The first observation sizes the canvas and paints, after this commit's effects have run.
   const observer = new ResizeObserver(resize);
@@ -222,6 +216,6 @@ function recordWormsign(canvas: HTMLCanvasElement, roll: RefObject<TraceStrip | 
   return () => {
     window.cancelAnimationFrame(frame);
     observer.disconnect();
-    density.removeEventListener("change", rescale);
+    unwatchDensity();
   };
 }

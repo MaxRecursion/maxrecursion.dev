@@ -188,3 +188,40 @@ test("the wormsign trace is bounded and beats while a thumper waits", () => {
   assert.ok(wormsignAt(tracks, 100 + 0.5, summons).thump < 0.1);
   assert.equal(wormsignAt(tracks, summons.rearAt + 0.1, summons).thump, 0);
 });
+
+test("after a breach the regular passes pick up again without a jump, and a thumper keeps them", () => {
+  let t = 0;
+  while (wormPose(shaiHulud, t).active) t += 0.5;
+  const first = planThumper(shaiHulud, t);
+  assert.ok(first.breach);
+  const period = wormPeriod(shaiHulud);
+  for (let again = first.breach.end; again < first.breach.after + period; again += 2.5) {
+    const second = planThumper(shaiHulud, again, first);
+    const until = second.breach?.start ?? second.rearAt;
+    for (let dt = 0; again + dt < until; dt += 0.25) {
+      assert.equal(wormPose(shaiHulud, again + dt, second).head, wormPose(shaiHulud, again + dt, first).head);
+    }
+    if (second.breach) assert.equal(surfaced(shaiHulud, second.breach.start - 0.05, second), null);
+  }
+});
+
+test("every answer to a thumper rears up on screen, and a breach skips the routine rear-up", () => {
+  let previous: ReturnType<typeof planThumper> | null = null;
+  for (let planted = 0; planted < wormPeriod(shaiHulud) * 2; planted += 3.3) {
+    for (const summons of [planThumper(shaiHulud, planted), planThumper(shaiHulud, planted, previous)]) {
+      let seen = false;
+      for (let t = summons.rearAt + 1.3; t <= summons.rearAt + 3.9; t += 0.2) {
+        const pose = wormPose(shaiHulud, t, summons);
+        if (!pose.active || spineHeight(shaiHulud, pose, pose.head) <= 0) continue;
+        seen ||= geo.samplePath(shaiHulud.path, pose.head).x <= 1640;
+      }
+      assert.ok(seen, `answer at ${summons.rearAt.toFixed(1)} s is off screen`);
+      if (summons.breach) {
+        for (let t = summons.breach.start; t < summons.breach.end; t += 0.5) {
+          if (t < summons.rearAt || t > summons.rearAt + summonedDuration) assert.equal(wormPose(shaiHulud, t, summons).rearing, 0);
+        }
+      }
+    }
+    previous = planThumper(shaiHulud, planted, previous);
+  }
+});

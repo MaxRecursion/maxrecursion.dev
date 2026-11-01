@@ -10,12 +10,12 @@ import styles from "./CloudDrift.module.css";
 export function CloudDrift() {
   return (
     <div aria-hidden="true" className={styles.sky} data-cloud-drift>
-      <Image src="/images/desert-clouds.webp" alt="" fill loading="eager" sizes="100vw" className={styles.clouds} />
+      <Image src="/images/desert-clouds.webp" alt="" fill fetchPriority="low" sizes="100vw" className={styles.clouds} />
       <Image
         src="/images/desert-clouds.webp"
         alt=""
         fill
-        loading="eager"
+        fetchPriority="low"
         sizes="100vw"
         className={`${styles.clouds} ${styles.trailing}`}
       />
