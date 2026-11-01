@@ -184,6 +184,12 @@ export function Sandworms({ running, still }: { running: boolean; still: boolean
 
     /** Fade the worms out before they could ever sit beside the headline text. */
     const keepClearOfText = () => {
+      // On phones the text sits above the dunes, so nothing needs to stay clear of it.
+      if (compactQuery.matches) {
+        canvas.style.maskImage = "";
+        canvas.style.removeProperty("-webkit-mask-image");
+        return;
+      }
       let right = 0;
       const range = document.createRange();
       const walker = document.createTreeWalker(hero.querySelector("h1")?.parentElement ?? hero, NodeFilter.SHOW_TEXT);
@@ -560,7 +566,6 @@ export function Sandworms({ running, still }: { running: boolean; still: boolean
 
     const paint = (t: number, dt: number) => {
       context.clearRect(0, 0, width, height);
-      if (compactQuery.matches) return;
       const summons = still ? null : getSummons();
       tracks.forEach((track, i) => {
         const pose = wormPose(track, still ? STILL[track.spec.id] : t, summons);

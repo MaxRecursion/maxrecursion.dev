@@ -16,7 +16,7 @@ export function HeroBackground() {
             fill
             preload
             fetchPriority="high"
-            sizes="100vw"
+            sizes="(max-width: 767px) 1200px, 100vw"
             className={styles.desertImage}
           />
         }

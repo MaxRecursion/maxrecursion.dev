@@ -11,12 +11,12 @@
   pointer-events: none;
   container-type: size;
   /* Outside the faded scene, the layer fades itself the same way:
-     colour × 0.25 + #f1eadc × 0.75 (light), colour × 0.8 + #11110f × 0.2 (dark). */
+     colour × 0.25 + #f1eadc × 0.75 (light), colour × 0.72 + #11110f × 0.28 (dark). */
   filter: contrast(0.161) brightness(1.555) sepia(0.25);
 }
 
 :global(.dark) .sky {
-  filter: contrast(0.969) brightness(0.826);
+  filter: contrast(0.951) brightness(0.757);
 }
 
 .clouds {
@@ -59,18 +59,10 @@
   }
 }
 
+/* The phone's window shows the dunes, so there is no sky to drift over. */
 @media (max-width: 767px) {
-  /* colour × 0.14 + #f1eadc × 0.86 (light), colour × 0.48 + #11110f × 0.52 (dark). */
   .sky {
-    filter: contrast(0.085) brightness(1.642) sepia(0.24);
-  }
-
-  :global(.dark) .sky {
-    filter: contrast(0.878) brightness(0.547);
-  }
-
-  .clouds {
-    object-position: 67% center;
+    display: none;
   }
 }
 

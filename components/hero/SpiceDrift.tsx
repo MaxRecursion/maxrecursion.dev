@@ -14,7 +14,9 @@ import { getSpiceGust, type SpicePointer } from "@/lib/spice-wind";
 import styles from "@/app/home.module.css";
 import { watchDensity } from "./watchDensity";
 
-const INK = { dark: "218, 176, 111", light: "139, 88, 38" } as const;
+const INK = { dark: "255, 205, 134", light: "139, 88, 38" } as const;
+/** At night each grain glows: a soft amber halo added over the dunes, shimmering grain by grain. */
+const HALO = { colour: "255, 168, 72", radius: 5, perSize: 14, alpha: 0.42, minStep: 3, shimmerSpeed: 2.1 } as const;
 const TAU = Math.PI * 2;
 /** Grains are drawn in alpha steps, one fill and one stroke per step. */
 const ALPHA_STEPS = 10;
@@ -89,16 +91,36 @@ export function SpiceDrift({ running }: { running: boolean }) {
     const canvas = ref.current;
     const hero = canvas?.closest("section");
     if (!canvas || !hero || !running) return;
-    return driftSpice(canvas, hero, resolvedTheme === "dark" ? INK.dark : INK.light);
+    const night = resolvedTheme === "dark";
+    return driftSpice(canvas, hero, night ? INK.dark : INK.light, night);
   }, [running, resolvedTheme]);
 
   return <canvas ref={ref} data-spice-drift data-interacting="false" className={styles.spiceCanvas} />;
 }
 
+/** A soft amber glow, bright at the centre, drawn once and stamped under every grain at night. */
+function createHalo() {
+  const sprite = document.createElement("canvas");
+  sprite.width = sprite.height = 48;
+  const context = sprite.getContext("2d");
+  if (!context) return null;
+  const gradient = context.createRadialGradient(24, 24, 0, 24, 24, 24);
+  gradient.addColorStop(0, `rgba(${HALO.colour}, 0.9)`);
+  gradient.addColorStop(0.25, `rgba(${HALO.colour}, 0.32)`);
+  gradient.addColorStop(0.6, `rgba(${HALO.colour}, 0.07)`);
+  gradient.addColorStop(1, `rgba(${HALO.colour}, 0)`);
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, 48, 48);
+  return sprite;
+}
+
 /** Animates the grains on `canvas` until the returned cleanup runs. */
-function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string) {
+function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string, glow: boolean) {
   const context = canvas.getContext("2d", { alpha: true });
   if (!context) return;
+  const halo = glow ? createHalo() : null;
+  /** Seconds of motion so far, which times the shimmer. */
+  let clock = 0;
   const compact = window.matchMedia(COMPACT_QUERY);
   const fills = Array.from({ length: ALPHA_STEPS + 1 }, (_, k) => `rgba(${ink}, ${((ALPHA_MAX * k) / ALPHA_STEPS).toFixed(3)})`);
   const trails = Array.from({ length: ALPHA_STEPS + 1 }, (_, k) => `rgba(${ink}, ${((0.35 * ALPHA_MAX * k) / ALPHA_STEPS).toFixed(3)})`);
@@ -313,6 +335,23 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string) {
     for (let k = 1; k < tally.length; k++) tally[k] += tally[k - 1];
     for (let i = 0; i < f.count; i++) f.order[tally[f.step[i]]++] = i;
 
+    if (halo) {
+      context.globalCompositeOperation = "lighter";
+      for (let i = 0; i < f.count; i++) {
+        if (f.step[i] < HALO.minStep) continue;
+        const r = HALO.radius + HALO.perSize * f.size[i];
+        const shimmer = 0.6 + 0.4 * Math.sin(clock * HALO.shimmerSpeed + f.phase[i]);
+        context.globalAlpha = (f.step[i] / ALPHA_STEPS) * shimmer * HALO.alpha;
+        context.drawImage(halo, f.x[i] - r, f.y[i] - r, 2 * r, 2 * r);
+        left = Math.min(left, f.x[i] - r);
+        right = Math.max(right, f.x[i] + r);
+        top = Math.min(top, f.y[i] - r);
+        bottom = Math.max(bottom, f.y[i] + r);
+      }
+      context.globalAlpha = 1;
+      context.globalCompositeOperation = "source-over";
+    }
+
     context.lineWidth = TRAIL_WIDTH;
     for (let k = 1; k <= ALPHA_STEPS; k++) {
       const from = tally[k - 1];
@@ -358,6 +397,7 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string) {
     if (field.count && (!lastPaint || now - lastPaint >= 1000 / 30 - 2)) {
       const dt = lastPaint ? Math.min((now - lastPaint) / 1000, 0.05) : 1 / 30;
       lastPaint = now;
+      clock += dt;
       advance(dt);
       draw();
     }

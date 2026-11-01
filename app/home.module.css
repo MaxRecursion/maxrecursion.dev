@@ -191,8 +191,9 @@
   object-position: 72% center;
 }
 
+/* Dark mode is night: a deeper scene, lit by the horizon glow and the spice. */
 :global(.dark) .desertScene {
-  opacity: 0.8;
+  opacity: 0.72;
 }
 
 /* Spice rides every dune contour (all below 59% of the artwork) and fades out before reaching the text. */
@@ -468,9 +469,11 @@
     margin-left: 4px;
   }
 
+  /* The text sits on top; the dunes get a window of their own beneath it. */
   .hero {
-    min-height: max(790px, 100svh);
-    padding: 135px 24px 130px;
+    align-items: flex-start;
+    min-height: max(890px, 100svh);
+    padding: 92px 24px 300px;
   }
 
   .headline {
@@ -498,36 +501,71 @@
     font-size: 13px;
   }
 
-  .desertImage {
-    object-position: 67% center;
+  /*
+   * The dune window. The atmosphere becomes the whole artwork at --s px per image px, pinned to
+   * the bottom-right of the hero so its lower 440px (image y from --crop down) shows the dunes.
+   * Every layer inside is placed in artwork coordinates, so the sun, spice and worms stay on the
+   * sand. The window's top fades into the page rather than meeting the text.
+   */
+  .atmosphere {
+    --s: 0.76;
+    --window: 440px;
+    --crop: 362;
+    --overhang: 90;
+    inset: auto;
+    top: calc(100% - var(--window) - var(--crop) * var(--s) * 1px);
+    right: calc(var(--overhang) * var(--s) * -1px);
+    width: calc(1672px * var(--s));
+    height: calc(941px * var(--s));
   }
 
   .desertScene {
-    opacity: 0.14;
+    opacity: 0.55;
   }
 
   :global(.dark) .desertScene {
-    opacity: 0.48;
+    opacity: 0.74;
   }
 
   .spiceCanvas {
-    opacity: 0.4;
-    mask-image: linear-gradient(90deg, transparent, #000 20%);
+    inset: auto;
+    top: 56%;
+    left: 56%;
+    width: 44%;
+    height: 44%;
+    opacity: 0.75;
+    mask-image: none;
   }
 
-  /* On phones the text covers the dunes; the worms stay on larger screens. */
   .wormCanvas {
-    display: none;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 56%;
+    width: 44%;
+    height: 42%;
+    opacity: 0.4;
   }
 
+  :global(.dark) .wormCanvas {
+    opacity: 0.9;
+  }
+
+  /* Only the window's patch of sky is drawn: the sun sits above the far mountains, and sets behind them. */
   .skyCycle {
-    mask-position: 67% 50%;
+    inset: auto;
+    top: 30%;
+    left: 56%;
+    width: 44%;
+    height: 40%;
+    mask-size: calc(1672px * var(--s)) calc(941px * var(--s));
+    mask-position: calc(-0.56 * 1672px * var(--s)) calc(-0.3 * 941px * var(--s));
   }
 
   .solarPosition {
-    left: calc(60% + (var(--portfolio-sun-x) - 68) * 1.388889%);
-    top: calc(70px + var(--portfolio-sun-y) * 1.5px);
-    width: 64px;
+    left: calc((86 + (var(--portfolio-sun-x) - 68) * 0.2778 - 56) / 0.44 * 1%);
+    top: calc((max(var(--portfolio-sun-y), 56) - 30) / 0.4 * 1%);
+    width: 72px;
   }
 
   .solarHalo {
@@ -536,8 +574,8 @@
 
   .landscapeShade {
     background:
-      linear-gradient(90deg, color-mix(in srgb, var(--background) 86%, transparent), color-mix(in srgb, var(--background) 48%, transparent)),
-      linear-gradient(180deg, var(--background), transparent 35%, transparent 60%, var(--background));
+      linear-gradient(180deg, var(--background) 0, var(--background) calc(100% - 440px + 30px), color-mix(in srgb, var(--background) 0%, transparent) calc(100% - 440px + 190px)),
+      linear-gradient(180deg, transparent calc(100% - 150px), color-mix(in srgb, var(--background) 86%, transparent));
   }
 
   .heroFoot {
