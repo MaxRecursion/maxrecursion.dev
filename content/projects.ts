@@ -21,7 +21,7 @@ export type ProjectOverride = {
 };
 
 /** Featured projects, in display order. */
-export const featured = ["Archeo", "ActiveAero_F1", "AutoVerse", "DataDrivenSIP", "Xposter", "DiskLens"];
+export const featured = ["Archeo", "ActiveAero_F1", "AutoVerse", "DataDrivenSIP", "Xposter", "DiskLens", "gitflow-studio"];
 
 /** Repos that have a write-up under /case-studies. Shown in their own section, not in the grid. */
 export const caseStudyRepos = ["CSVToParquet", "f1analyst"];
@@ -30,6 +30,19 @@ export const caseStudyRepos = ["CSVToParquet", "f1analyst"];
 export const hidden = ["HealthVault"];
 
 export const overrides: Record<string, ProjectOverride> = {
+  "gitflow-studio": {
+    title: "GitFlow Studio",
+    description:
+      "A native macOS Git client with an editable three-way merge workspace. Review changes, stage individual lines, manage branches and worktrees, and resolve supported conflicts visually.",
+    highlight:
+      "SwiftUI and TextKit 2 over the installed Git CLI, with unmerged-index validation, stale-state protection and local conflict-draft recovery. Engineering preview; signed distribution and broader parity remain in progress.",
+    tags: ["Swift 6", "SwiftUI", "AppKit", "Git CLI"],
+    flow: {
+      label: "Visual conflict resolution",
+      steps: ["Read Git index", "Compare versions", "Edit and stage", "Explicitly continue"],
+    },
+    technicalUrl: "https://github.com/MaxRecursion/gitflow-studio/blob/main/ARCHITECTURE.md",
+  },
   Archeo: {
     title: "Archeo — Codebase Archaeologist",
     description:
