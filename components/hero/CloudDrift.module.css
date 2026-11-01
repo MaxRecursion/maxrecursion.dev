@@ -22,7 +22,6 @@
 .clouds {
   object-fit: cover;
   object-position: 72% center;
-  will-change: transform, opacity;
   animation: drift 60s linear infinite, fade 60s infinite;
   animation-delay: -30s;
   animation-play-state: var(--atmosphere-play-state, paused);
@@ -75,11 +74,12 @@
   }
 }
 
-/* One still copy over the softened sky reproduces the artwork. */
-@media (prefers-reduced-motion: reduce) {
+/* One still copy over the softened sky reproduces the artwork. Touch screens get it too: two large
+   animated layers under a filter cost enough memory while pinch-zooming to make mobile Safari
+   discard the page. */
+@media (prefers-reduced-motion: reduce), (max-width: 767px), (pointer: coarse) {
   .clouds {
     animation: none;
-    will-change: auto;
   }
 
   .trailing {
