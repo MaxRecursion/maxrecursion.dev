@@ -14,9 +14,9 @@ import { getSpiceGust, type SpicePointer } from "@/lib/spice-wind";
 import styles from "@/app/home.module.css";
 import { watchDensity } from "./watchDensity";
 
-const INK = { dark: "255, 205, 134", light: "139, 88, 38" } as const;
-/** At night each grain glows: a soft amber halo added over the dunes, shimmering grain by grain. */
-const HALO = { colour: "255, 168, 72", radius: 5, perSize: 14, alpha: 0.42, minStep: 3, shimmerSpeed: 2.1 } as const;
+const INK = { dark: "198, 182, 255", light: "139, 88, 38" } as const;
+/** At night each grain glows: a soft purple-blue halo added over the dunes, shimmering grain by grain. */
+const HALO = { colour: "116, 98, 255", radius: 5, perSize: 14, alpha: 0.5, minStep: 3, shimmerSpeed: 2.1 } as const;
 const TAU = Math.PI * 2;
 /** Grains are drawn in alpha steps, one fill and one stroke per step. */
 const ALPHA_STEPS = 10;
@@ -98,7 +98,7 @@ export function SpiceDrift({ running }: { running: boolean }) {
   return <canvas ref={ref} data-spice-drift data-interacting="false" className={styles.spiceCanvas} />;
 }
 
-/** A soft amber glow, bright at the centre, drawn once and stamped under every grain at night. */
+/** A soft purple-blue glow, bright at the centre, drawn once and stamped under every grain at night. */
 function createHalo() {
   const sprite = document.createElement("canvas");
   sprite.width = sprite.height = 48;
