@@ -1,41 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
 import styles from "@/app/home.module.css";
+import { Sandworms } from "./Sandworms";
 import { SpiceDrift } from "./SpiceDrift";
+import { useAnimationGate } from "./useAnimationGate";
 
-/** One visibility controller keeps both atmospheric layers idle when unseen. */
-export function DesertAtmosphere({ children }: { children: ReactNode }) {
+/**
+ * One visibility controller keeps every atmospheric layer idle when unseen.
+ * The faded scene sits at the back, the sky (sun, clouds) above it, then the
+ * sandworms and the spice blowing over everything.
+ */
+export function DesertAtmosphere({ scene, sky }: { scene: ReactNode; sky?: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [running, setRunning] = useState(false);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let visible = false;
-    const update = () => setRunning(visible && !document.hidden && !motion.matches);
-    const observer = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        update();
-      },
-      { threshold: 0 },
-    );
-
-    if (observer) observer.observe(element);
-    else {
-      visible = true;
-      update();
-    }
-    document.addEventListener("visibilitychange", update);
-    motion.addEventListener("change", update);
-    return () => {
-      observer?.disconnect();
-      document.removeEventListener("visibilitychange", update);
-      motion.removeEventListener("change", update);
-    };
-  }, []);
+  const { running, still } = useAnimationGate(ref);
 
   return (
     <div
@@ -45,7 +23,9 @@ export function DesertAtmosphere({ children }: { children: ReactNode }) {
       className={styles.atmosphere}
       style={{ "--atmosphere-play-state": running ? "running" : "paused" } as CSSProperties}
     >
-      <div className={styles.desertScene}>{children}</div>
+      <div className={styles.desertScene}>{scene}</div>
+      {sky}
+      <Sandworms running={running} still={still} />
       <SpiceDrift running={running} />
     </div>
   );

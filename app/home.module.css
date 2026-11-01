@@ -195,16 +195,32 @@
   opacity: 0.8;
 }
 
+/* Spice rides every dune contour (all below 59% of the artwork) and fades out before reaching the text. */
 .spiceCanvas {
   position: absolute;
-  top: 56%;
-  right: 0;
-  bottom: 10%;
-  width: 66%;
-  height: 34%;
+  inset: 50% 0 0;
+  width: 100%;
+  height: 50%;
   pointer-events: none;
   opacity: 0.7;
-  mask-image: linear-gradient(90deg, transparent, #000 20%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent 34%, #000 50%);
+}
+
+/* The worms only ever swim on the right half of the dunes; a script mask keeps them clear of the text. */
+.wormCanvas {
+  position: absolute;
+  top: 40%;
+  right: 0;
+  bottom: 4%;
+  left: 36%;
+  width: 64%;
+  height: 56%;
+  pointer-events: none;
+  opacity: 0.27;
+}
+
+:global(.dark) .wormCanvas {
+  opacity: 0.86;
 }
 
 /* Interpolate clock coordinates, so resizing the viewport itself stays instant. */
@@ -491,8 +507,13 @@
   }
 
   .spiceCanvas {
-    width: 100%;
     opacity: 0.4;
+    mask-image: linear-gradient(90deg, transparent, #000 20%);
+  }
+
+  /* On phones the text covers the dunes; the worms stay on larger screens. */
+  .wormCanvas {
+    display: none;
   }
 
   .solarPosition {

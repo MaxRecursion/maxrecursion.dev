@@ -5,6 +5,7 @@ import { ArrowDownIcon, GitHubIcon, LinkedInIcon } from "@/components/icons";
 import styles from "@/app/home.module.css";
 import { HeroBackground } from "./HeroBackground";
 import { LocalTime } from "./LocalTime";
+import { WormsignRail } from "./WormsignRail";
 
 // One short entrance, then everything rests. The landscape is always still.
 const rise = (ms: number) => ({ "--rise-delay": `${ms}ms` }) as CSSProperties;
@@ -66,6 +67,7 @@ export function Hero() {
           <span>Scroll to explore</span><ArrowDownIcon className="size-3" />
         </a>
       </div>
+      <WormsignRail />
     </section>
   );
 }

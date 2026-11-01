@@ -1,0 +1,114 @@
+/* A seismograph in the empty margin left of the hero text, between the header and the hero footer. */
+.rail {
+  position: absolute;
+  z-index: 1;
+  top: 120px;
+  bottom: 110px;
+  left: 0;
+  display: flex;
+  width: max(0px, calc((100% - 1200px) / 2));
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-inline: 16px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* The hero eyebrow, a size smaller. */
+.label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.marker {
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+
+/* The canvas inks its trace in `color` and its rules in `border-color`; older paper fades out. */
+.paper {
+  flex: 1;
+  width: 64px;
+  min-height: 0;
+  color: var(--accent);
+  border-color: var(--border);
+  mask-image: linear-gradient(#000, #000 60%, transparent);
+  opacity: 0.8;
+}
+
+/* Dark mode needs the full ink to read as softly as light mode. */
+:global(.dark) .paper {
+  opacity: 1;
+}
+
+.thumper {
+  width: min(100%, calc(15.5ch + 20px));
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--muted);
+  background: transparent;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 200ms, border-color 200ms, opacity 200ms;
+}
+
+.thumper:focus-visible {
+  border-radius: 2px;
+}
+
+.thumper:not([aria-disabled="true"]):hover,
+.thumper:not([aria-disabled="true"]):focus-visible {
+  border-color: var(--accent);
+  color: var(--foreground);
+}
+
+.thumper[aria-disabled="true"] {
+  cursor: default;
+}
+
+.thumper[data-phase="answering"] {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  color: var(--accent);
+}
+
+/* A narrow margin: room for the longest word, and two lines kept for every label so the paper never jumps. */
+@media (max-width: 1519px) {
+  .rail {
+    padding-inline: 8px;
+  }
+
+  .thumper {
+    min-height: 36px;
+    padding-inline: 4px;
+  }
+}
+
+@media (max-width: 1399px) {
+  .rail {
+    display: none;
+  }
+}
+
+/* Reduced motion keeps the paper still, and nothing answers a thumper. */
+@media (prefers-reduced-motion: reduce) {
+  .thumper {
+    display: none;
+  }
+}

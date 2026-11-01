@@ -1,37 +1,88 @@
+/*
+ * Each copy crosses 28% of the artwork's width with the wind in 60 s while it
+ * fades in and out; the trailing copy runs half a period behind. The distance
+ * follows the artwork's object-fit: cover width, so the clouds keep the same
+ * speed relative to their size at every aspect ratio: about 9 px/s at 1920 px.
+ */
 .sky {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 58%);
+  container-type: size;
+  /* Outside the faded scene, the layer fades itself the same way:
+     colour × 0.25 + #f1eadc × 0.75 (light), colour × 0.8 + #11110f × 0.2 (dark). */
+  filter: contrast(0.161) brightness(1.555) sepia(0.25);
+}
+
+:global(.dark) .sky {
+  filter: contrast(0.969) brightness(0.826);
 }
 
 .clouds {
   object-fit: cover;
   object-position: 72% center;
-  transform: translate3d(-1.5%, -0.4%, 0) scale(1.06);
-  animation: drift 120s ease-in-out alternate infinite;
+  will-change: transform, opacity;
+  animation: drift 60s linear infinite, fade 60s infinite;
+  animation-delay: -30s;
   animation-play-state: var(--atmosphere-play-state, paused);
 }
 
+.trailing {
+  animation-delay: 0s;
+}
+
+/* 177.68cqh is the cover width of the 1672 × 941 artwork when the hero is taller than 16:9. */
 @keyframes drift {
   from {
-    transform: translate3d(-1.5%, -0.4%, 0) scale(1.06);
+    transform: translate3d(calc(-0.14 * max(100cqw, 177.68cqh)), 0, 0);
   }
 
   to {
-    transform: translate3d(1.5%, 0.4%, 0) scale(1.06);
+    transform: translate3d(calc(0.14 * max(100cqw, 177.68cqh)), 0, 0);
+  }
+}
+
+/* sin(πt): the two opacities square-sum to 1, so the clouds keep their contrast mid-cross-fade. */
+@keyframes fade {
+  from {
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.33, 0.52, 0.64, 1);
+  }
+
+  50% {
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.36, 0, 0.67, 0.48);
+  }
+
+  to {
+    opacity: 0;
   }
 }
 
 @media (max-width: 767px) {
+  /* colour × 0.14 + #f1eadc × 0.86 (light), colour × 0.48 + #11110f × 0.52 (dark). */
+  .sky {
+    filter: contrast(0.085) brightness(1.642) sepia(0.24);
+  }
+
+  :global(.dark) .sky {
+    filter: contrast(0.878) brightness(0.547);
+  }
+
   .clouds {
     object-position: 67% center;
   }
 }
 
+/* One still copy over the softened sky reproduces the artwork. */
 @media (prefers-reduced-motion: reduce) {
-  .sky {
+  .clouds {
+    animation: none;
+    will-change: auto;
+  }
+
+  .trailing {
     display: none;
   }
 }

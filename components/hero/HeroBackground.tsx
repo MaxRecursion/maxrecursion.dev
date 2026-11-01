@@ -4,22 +4,28 @@ import { SunCycle } from "./SunCycle";
 import { CloudDrift } from "./CloudDrift";
 import { DesertAtmosphere } from "./DesertAtmosphere";
 
-/** A still terrain with a moving sky, clock-driven sun and a fine spice drift. */
+/** Still terrain under a softened sky, a clock-driven sun, drifting clouds, sandworms and spice. */
 export function HeroBackground() {
   return (
     <div aria-hidden="true" className={styles.landscape}>
-      <DesertAtmosphere>
-        <Image
-          src="/images/desert-sky.webp"
-          alt=""
-          fill
-          preload
-          sizes="100vw"
-          className={styles.desertImage}
-        />
-        <CloudDrift />
-      </DesertAtmosphere>
-      <SunCycle />
+      <DesertAtmosphere
+        scene={
+          <Image
+            src="/images/desert-sky-clear.webp"
+            alt=""
+            fill
+            preload
+            sizes="100vw"
+            className={styles.desertImage}
+          />
+        }
+        sky={
+          <>
+            <SunCycle />
+            <CloudDrift />
+          </>
+        }
+      />
       <div className={styles.landscapeShade} />
       <div className={`grain ${styles.landscapeGrain}`} />
     </div>
