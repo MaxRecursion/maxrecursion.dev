@@ -34,3 +34,7 @@ Drawn at offset 0, the clouds over the clear sky reproduce the artwork (mean err
 ## Dune contours
 
 The spice lanes and the sandworm lanes in `lib/dune-geometry.ts` are traced from the same artwork. Bright crest lines were detected column by column, linked into ridges and hand-curated; the lanes on the dune faces follow the crests above them. Canvas layers map them onto the hero with the artwork's own `object-fit: cover` placement, so the grains and worms stay on the sand at every screen size.
+
+## Skyline mask
+
+`scripts/derive-desert-skyline.mjs` traces the top edge of the far mountains, the highest land in `desert-sky.webp`, column by column: the first row that falls clearly below the brightest sky just above it, then a running median and mean to smooth it. It writes `desert-sky-mask.svg`, the sky above that line in the artwork's pixel space with a 0.8 px feather for the haze. The hero masks the sun with it using the artwork's own cover placement, so at dawn and dusk the sun rises and sets behind the mountains rather than over the dunes. The output is deterministic.

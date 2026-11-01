@@ -236,11 +236,14 @@
   initial-value: 42;
 }
 
+/* The artwork's sky, placed like the artwork: the sun sets behind the far mountains, never over the dunes. */
 .skyCycle {
   position: absolute;
   inset: 0;
-  /* The sun slips into the haze at the dune horizon. */
-  mask-image: linear-gradient(#000 0%, #000 56%, transparent 65%);
+  mask-image: url("/images/desert-sky-mask.svg");
+  mask-position: 72% 50%;
+  mask-repeat: no-repeat;
+  mask-size: cover;
 }
 
 .solarPosition {
@@ -250,8 +253,7 @@
   width: clamp(80px, 9vw, 126px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  opacity: var(--sun-strength);
-  transition: --portfolio-sun-x 60s linear, --portfolio-sun-y 60s linear, opacity 4s ease;
+  transition: --portfolio-sun-x 60s linear, --portfolio-sun-y 60s linear;
 }
 
 .solarHalo {
@@ -259,10 +261,11 @@
   inset: -135%;
   border-radius: 50%;
   background: radial-gradient(circle, hsl(var(--sun-hue) 86% 66% / 0.5), hsl(var(--sun-hue) 70% 52% / 0.15) 30%, transparent 66%);
-  opacity: var(--sun-glow);
+  opacity: calc(var(--sun-glow) * var(--sun-strength));
   transition: opacity 4s ease;
 }
 
+/* Always opaque: the hour dims the disc instead of letting the sky show through it. */
 .solarDisc {
   position: absolute;
   inset: 0;
@@ -270,7 +273,8 @@
   border-radius: 50%;
   background: linear-gradient(135deg, #fff5d9 5%, hsl(var(--sun-hue) 85% 77%) 50%, hsl(var(--sun-hue) 66% 55%));
   box-shadow: 0 0 20px hsl(var(--sun-hue) 85% 73% / 0.4), 0 0 70px hsl(var(--sun-hue) 85% 58% / 0.2);
-  transition: box-shadow 1.2s ease;
+  filter: brightness(var(--sun-strength));
+  transition: box-shadow 1.2s ease, filter 4s ease;
 }
 
 .solarOcclusion {
@@ -514,6 +518,10 @@
   /* On phones the text covers the dunes; the worms stay on larger screens. */
   .wormCanvas {
     display: none;
+  }
+
+  .skyCycle {
+    mask-position: 67% 50%;
   }
 
   .solarPosition {
