@@ -36,8 +36,9 @@ const heroes = [
 ] as const;
 
 test("the field is twice the earlier one and every grain is allocated", () => {
-  assert.equal(GRAIN_COUNT.wide, 2 * 110 * 3);
-  assert.equal(GRAIN_COUNT.compact, 2 * 48 * 3);
+  // Five times the earlier 660 and 288: a fine-grained flow.
+  assert.equal(GRAIN_COUNT.wide, 5 * 2 * 110 * 3);
+  assert.equal(GRAIN_COUNT.compact, 5 * 2 * 48 * 3);
   for (const [{ spans, counts }, total] of [[desktop, GRAIN_COUNT.wide], [phone, GRAIN_COUNT.compact]] as const) {
     assert.equal(counts.reduce((a, b) => a + b, 0), total);
     const sum = spans.reduce((a, span, i) => a + tracks[i].weight * length(span), 0);

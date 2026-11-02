@@ -8,12 +8,12 @@
  */
 import type { Cover, DunePath } from "./dune-geometry";
 
-/** Twice the earlier field: 660 grains on wide screens, 288 on phones. */
-export const GRAIN_COUNT = { wide: 660, compact: 288 } as const;
+/** A fine-grained flow: 3,300 grains of 1-2 px on wide screens, 1,440 on phones. */
+export const GRAIN_COUNT = { wide: 3300, compact: 1440 } as const;
 /** Highest saltation hop, CSS px. */
-export const HOP_HEIGHT = 2;
+export const HOP_HEIGHT = 0.8;
 /** Average share of grains blown off a crest they cross. */
-export const LIFT_SHARE = 0.3;
+export const LIFT_SHARE = 0.12;
 /** Each grain leaves a crest somewhere from this far before it to this far after, image px. */
 export const LIFT_WINDOW = [-8, 12] as const;
 /** Farthest a gust can push a grain off the sand, CSS px per axis: a backstop beyond what a hover reaches. */

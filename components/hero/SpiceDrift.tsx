@@ -15,16 +15,16 @@ import styles from "@/app/home.module.css";
 import { watchDensity } from "./watchDensity";
 
 const INK = { dark: "198, 182, 255", light: "139, 88, 38" } as const;
-/** At night each grain glows: a soft purple-blue halo added over the dunes, shimmering grain by grain. */
-const HALO = { colour: "116, 98, 255", radius: 5, perSize: 14, alpha: 0.5, minStep: 3, shimmerSpeed: 2.1 } as const;
+/** At night grains add their light together, so a dense stream glows; each also shimmers a little. */
+const SHIMMER = { depth: 0.35, speed: 2.1 } as const;
 const TAU = Math.PI * 2;
 /** Grains are drawn in alpha steps, one fill and one stroke per step. */
 const ALPHA_STEPS = 10;
-const ALPHA_MAX = 0.8;
-/** A streak shows the last tenth of a second of travel, up to 8 px. */
+const ALPHA_MAX = 0.6;
+/** A short streak shows the last tenth of a second of travel, up to 2 px: grains, not specks in flight. */
 const TRAIL_SECONDS = 0.1;
-const TRAIL_MAX = 8;
-const TRAIL_WIDTH = 0.3;
+const TRAIL_MAX = 2;
+const TRAIL_WIDTH = 0.5;
 const GUST_RADIUS = 110;
 /** A passing mouse nudges grains about 7 px; one held still clears a gap of up to about 40 px. */
 const GUST_GAIN = 6;
@@ -98,27 +98,10 @@ export function SpiceDrift({ running }: { running: boolean }) {
   return <canvas ref={ref} data-spice-drift data-interacting="false" className={styles.spiceCanvas} />;
 }
 
-/** A soft purple-blue glow, bright at the centre, drawn once and stamped under every grain at night. */
-function createHalo() {
-  const sprite = document.createElement("canvas");
-  sprite.width = sprite.height = 48;
-  const context = sprite.getContext("2d");
-  if (!context) return null;
-  const gradient = context.createRadialGradient(24, 24, 0, 24, 24, 24);
-  gradient.addColorStop(0, `rgba(${HALO.colour}, 0.9)`);
-  gradient.addColorStop(0.25, `rgba(${HALO.colour}, 0.32)`);
-  gradient.addColorStop(0.6, `rgba(${HALO.colour}, 0.07)`);
-  gradient.addColorStop(1, `rgba(${HALO.colour}, 0)`);
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, 48, 48);
-  return sprite;
-}
-
 /** Animates the grains on `canvas` until the returned cleanup runs. */
 function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string, glow: boolean) {
   const context = canvas.getContext("2d", { alpha: true });
   if (!context) return;
-  const halo = glow ? createHalo() : null;
   /** Seconds of motion so far, which times the shimmer. */
   let clock = 0;
   const compact = window.matchMedia(COMPACT_QUERY);
@@ -191,7 +174,8 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string, g
         field.seed[i] = Math.floor(random() * 0xffffffff);
         field.phase[i] = random() * TAU;
         field.crest[i] = LIFT_WINDOW[0] + random() * (LIFT_WINDOW[1] - LIFT_WINDOW[0]);
-        field.size[i] = 0.24 + random() * 0.32;
+        // A fine grain: a 0.9-1.8 px dot.
+        field.size[i] = 0.9 + random() * 0.9;
         field.alpha[i] = 0.22 + random() * 0.36;
       }
     });
@@ -253,7 +237,8 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string, g
             s = crest;
             f.air[i] = 0;
             f.life[i] = 0.8 + 0.7 * random();
-            f.rise[i] = 8 + 14 * random();
+            // Skims off the crest rather than flying up, so the flow stays on the dunes.
+            f.rise[i] = 2 + 4 * random();
             break;
           }
         }
@@ -311,6 +296,7 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string, g
         vy += f.ovy[i];
       }
 
+      if (glow) alpha *= 1 - SHIMMER.depth * (0.5 + 0.5 * Math.sin(clock * SHIMMER.speed + f.phase[i]));
       f.step[i] = Math.max(0, Math.min(ALPHA_STEPS, Math.round((alpha / ALPHA_MAX) * ALPHA_STEPS)));
       if (!f.step[i]) continue;
       // The streak trails behind along the direction of travel.
@@ -335,23 +321,8 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string, g
     for (let k = 1; k < tally.length; k++) tally[k] += tally[k - 1];
     for (let i = 0; i < f.count; i++) f.order[tally[f.step[i]]++] = i;
 
-    if (halo) {
-      context.globalCompositeOperation = "lighter";
-      for (let i = 0; i < f.count; i++) {
-        if (f.step[i] < HALO.minStep) continue;
-        const r = HALO.radius + HALO.perSize * f.size[i];
-        const shimmer = 0.6 + 0.4 * Math.sin(clock * HALO.shimmerSpeed + f.phase[i]);
-        context.globalAlpha = (f.step[i] / ALPHA_STEPS) * shimmer * HALO.alpha;
-        context.drawImage(halo, f.x[i] - r, f.y[i] - r, 2 * r, 2 * r);
-        left = Math.min(left, f.x[i] - r);
-        right = Math.max(right, f.x[i] + r);
-        top = Math.min(top, f.y[i] - r);
-        bottom = Math.max(bottom, f.y[i] + r);
-      }
-      context.globalAlpha = 1;
-      context.globalCompositeOperation = "source-over";
-    }
-
+    // At night the grains add their light, so where the flow is dense it glows.
+    if (glow) context.globalCompositeOperation = "lighter";
     context.lineWidth = TRAIL_WIDTH;
     for (let k = 1; k <= ALPHA_STEPS; k++) {
       const from = tally[k - 1];
@@ -362,13 +333,9 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string, g
         const i = f.order[j];
         const x = f.x[i];
         const y = f.y[i];
-        const reach = Math.hypot(f.trailX[i], f.trailY[i]);
-        const ux = reach ? f.trailX[i] / reach : 1;
-        const uy = reach ? f.trailY[i] / reach : 0;
-        const rx = f.size[i] * 1.4;
-        // Start each grain as its own subpath so the grains are not joined up.
-        context.moveTo(x + rx * ux, y + rx * uy);
-        context.ellipse(x, y, rx, f.size[i] * 0.55, Math.atan2(uy, ux), 0, TAU);
+        const size = f.size[i];
+        // Each grain its own subpath, so the grains are not joined up.
+        context.rect(x - size / 2, y - size / 2, size, size);
         left = Math.min(left, x, x - f.trailX[i]);
         right = Math.max(right, x, x - f.trailX[i]);
         top = Math.min(top, y, y - f.trailY[i]);
@@ -385,6 +352,7 @@ function driftSpice(canvas: HTMLCanvasElement, hero: HTMLElement, ink: string, g
       context.strokeStyle = trails[k];
       context.stroke();
     }
+    context.globalCompositeOperation = "source-over";
     left = Math.floor(left) - 2;
     top = Math.floor(top) - 2;
     right = Math.ceil(right) + 2;
