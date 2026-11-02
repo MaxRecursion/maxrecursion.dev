@@ -33,13 +33,15 @@ export const overrides: Record<string, ProjectOverride> = {
   "gitflow-studio": {
     title: "GitFlow Studio",
     description:
-      "A native macOS Git client with an editable three-way merge workspace. Review changes, stage individual lines, manage branches and worktrees, and resolve supported conflicts visually.",
+      "A native macOS Git client with an editable three-way merge workspace. Stage individual lines, manage branches and worktrees, and resolve merge, rebase, cherry-pick and revert conflicts visually.",
     highlight:
-      "SwiftUI and TextKit 2 over the installed Git CLI, with unmerged-index validation, stale-state protection and local conflict-draft recovery. Engineering preview; signed distribution and broader parity remain in progress.",
+      "SwiftUI and TextKit 2 over installed Git, with 79 core tests, native UI regression coverage on Apple Silicon and Intel, and real Instruments captures. Engineering preview; Developer ID signing and notarization are pending.",
     tags: ["Swift 6", "SwiftUI", "AppKit", "Git CLI"],
     image: "/projects/gitflow-studio.jpg",
     imageAlt:
       "GitFlow Studio's merge workspace: the current and incoming versions of a conflicted Swift file side by side, with the merged result below and buttons to use current, use incoming or keep both.",
+    liveUrl: "https://github.com/MaxRecursion/gitflow-studio/blob/main/Documentation/RELEASE_STATUS.md",
+    liveLabel: "Preview status",
     technicalUrl: "https://github.com/MaxRecursion/gitflow-studio/blob/main/ARCHITECTURE.md",
   },
   Archeo: {
