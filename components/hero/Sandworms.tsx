@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 import { COMPACT_QUERY, DESERT_FOCUS, coverTransform, samplePath, type Cover, type PathSample } from "@/lib/dune-geometry";
-import { bodyRadius, spineHeight, wormPose, type WormId, type WormPose } from "@/lib/sandworms";
+import { bodyRadius, spineHeight, thumperPose, wormPose, type Summons, type WormId, type WormPose } from "@/lib/sandworms";
 import styles from "@/app/home.module.css";
 import { getSummons } from "./thumper";
 import { watchDensity } from "./watchDensity";
@@ -476,6 +476,107 @@ export function Sandworms({ running, still }: { running: boolean; still: boolean
       }
     };
 
+    const shaiHulud = tracks.find((track) => track.spec.id === "shai-hulud");
+    /** The strike whose sand has been thrown (planting time and beat), so each strike throws it once. */
+    let thrown = { planted: -1, beat: -1 };
+    // In daylight the canvas is faint, so strike effects get a darker, stronger ink.
+    const strikeInk = resolvedTheme === "dark"
+      ? { colour: palette.sand, gain: 1, spark: palette.sand }
+      : { colour: "74, 44, 20", gain: 1.7, spark: "255, 236, 200" };
+    /** Rounded where supported (Firefox gained roundRect in 112), square otherwise. */
+    const box = (x: number, y: number, w: number, h: number, radius: number) => {
+      context.beginPath();
+      if (context.roundRect) context.roundRect(x, y, w, h, radius);
+      else context.rect(x, y, w, h);
+      context.fill();
+    };
+
+    /** A Fremen thumper planted on the ridge: it drops in, beats, sends rings over the sand, and is swallowed. */
+    const drawThumper = (t: number, summons: Summons | null, dt: number) => {
+      const pose = thumperPose(summons, t);
+      if (!pose || !shaiHulud || !summons) return;
+      const r = shaiHulud.spec.radius * cover.scale;
+      const toScreen = (s: number) => {
+        samplePath(shaiHulud.path, s, ground);
+        return [cover.x + ground.x * cover.scale - offsetX, cover.y + ground.y * cover.scale - offsetY] as const;
+      };
+      const [gx, gy] = toScreen(pose.at);
+
+      // Each strike sends rings out over the sand and kicks up grains.
+      if (pose.struck < 0.9) {
+        context.lineWidth = Math.max(0.6, r * 0.07);
+        for (let ring = 0; ring < 3; ring++) {
+          const age = pose.struck - ring * 0.11;
+          if (age <= 0) continue;
+          const rx = r * (0.9 + 6 * age);
+          context.strokeStyle = `rgba(${strikeInk.colour}, ${Math.min(0.95, 0.55 * strikeInk.gain * (1 - age / 0.9) ** 1.5).toFixed(3)})`;
+          context.beginPath();
+          context.ellipse(gx, gy, rx, rx * 0.24, 0, 0, Math.PI * 2);
+          context.stroke();
+        }
+      }
+      // Only animated frames throw sand, so a resize redraw never uses up a strike's spray.
+      if (dt > 0 && pose.beat >= 0 && pose.struck < 0.2 && (thrown.planted !== summons.planted || thrown.beat !== pose.beat)) {
+        thrown = { planted: summons.planted, beat: pose.beat };
+        for (let i = 0; i < 12; i++) {
+          spawn(gx + (random() - 0.5) * r, gy - r * 0.1, (random() - 0.5) * r * 5, -r * (2 + random() * 3), gy, Math.max(0.7, r * 0.08));
+        }
+      }
+
+      // Only what stands above the sand shows.
+      context.save();
+      context.beginPath();
+      const [lx, ly] = toScreen(pose.at - r * 4);
+      const [rx, ry] = toScreen(pose.at + r * 4);
+      context.moveTo(lx, -height);
+      context.lineTo(lx, ly);
+      for (let s = pose.at - r * 4; s <= pose.at + r * 4; s += r * 0.5) context.lineTo(...toScreen(s));
+      context.lineTo(rx, ry);
+      context.lineTo(rx, -height);
+      context.closePath();
+      context.clip();
+
+      const jolt = pose.struck < 0.15 ? r * 0.06 * Math.exp(-pose.struck * 30) : 0;
+      // The whole thumper moves: it falls in from above, and later sinks as it is swallowed.
+      const base = gy + r - (1 - pose.planted) * r * 3.5 + pose.sunk * r * 3.2 + jolt;
+      const top = base - r * 3.2;
+      const post = r * 0.5;
+      const edge = Math.max(0.6, r * 0.08);
+      // Sleeve driven into the sand, banded, lit on the side facing the horizon glow.
+      context.fillStyle = "#2c2721";
+      box(gx - post / 2, top, post, base - top, post * 0.2);
+      context.fillStyle = palette.rim;
+      context.globalAlpha = 0.7;
+      context.fillRect(gx + post / 2 - edge, top + edge, edge, base - top - edge);
+      context.globalAlpha = 0.9;
+      context.fillStyle = "#15110d";
+      for (const band of [0.35, 0.95]) context.fillRect(gx - post / 2, top + r * band, post, edge);
+      // The hammer rides a rod above the sleeve: cocked high, then struck down.
+      const cap = r * 1.05;
+      const capHeight = r * 0.5;
+      const capTop = top - r * 0.12 - capHeight - pose.hammer * r * 0.8;
+      context.globalAlpha = 1;
+      context.fillStyle = "#3a332b";
+      context.fillRect(gx - r * 0.08, capTop + capHeight, r * 0.16, top - capTop - capHeight);
+      context.fillStyle = "#2c2721";
+      box(gx - cap / 2, capTop, cap, capHeight, capHeight * 0.35);
+      context.fillStyle = palette.rim;
+      context.globalAlpha = 0.75;
+      context.fillRect(gx - cap / 2 + capHeight * 0.3, capTop, cap - capHeight * 0.6, edge);
+      context.fillRect(gx + cap / 2 - edge, capTop + capHeight * 0.3, edge, capHeight * 0.4);
+      // A spark where the hammer meets the sleeve, just as it strikes.
+      if (pose.struck < 0.14) {
+        const glow = context.createRadialGradient(gx, top, 0, gx, top, r * 1.1);
+        glow.addColorStop(0, `rgba(${strikeInk.spark}, ${(0.8 * Math.exp(-pose.struck * 22)).toFixed(3)})`);
+        glow.addColorStop(1, `rgba(${strikeInk.spark}, 0)`);
+        context.globalAlpha = 1;
+        context.fillStyle = glow;
+        context.fillRect(gx - r * 1.1, top - r * 1.1, r * 2.2, r * 2.2);
+      }
+      context.globalAlpha = 1;
+      context.restore();
+    };
+
     const spawn = (x: number, y: number, vx: number, vy: number, floor: number, size: number) => {
       if (grains.count >= MAX_GRAINS) return;
       const i = grains.count++;
@@ -567,6 +668,8 @@ export function Sandworms({ running, still }: { running: boolean; still: boolean
     const paint = (t: number, dt: number) => {
       context.clearRect(0, 0, width, height);
       const summons = still ? null : getSummons();
+      // Drawn before the worms, so Shai-Hulud rises in front of the thumper it came for.
+      drawThumper(t, summons, dt);
       tracks.forEach((track, i) => {
         const pose = wormPose(track, still ? STILL[track.spec.id] : t, summons);
         if (!pose.active) return;

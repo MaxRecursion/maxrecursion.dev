@@ -5,6 +5,8 @@ export type WormTrack = WormRoute & { path: DunePath };
 
 /** The right edge of the artwork that is on screen at common desktop sizes. */
 const ON_SCREEN_X = 1640;
+/** Stricter, for the thumper: on screen down to a 1.45 aspect ratio (1400 × 965). */
+const THUMPER_X = 1560;
 
 let tracks: readonly WormTrack[] | null = null;
 
@@ -18,6 +20,7 @@ export function getWormTracks(): readonly WormTrack[] {
       path,
       length: path.length,
       visibleTo: eastward ? arcLengthAtX(path, ON_SCREEN_X) : path.length,
+      thumperTo: eastward ? arcLengthAtX(path, THUMPER_X) : path.length,
     };
   });
   return tracks;

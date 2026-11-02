@@ -83,6 +83,8 @@ export type WormRoute = {
   length: number;
   /** Lane arc length beyond which the head has left the artwork. */
   visibleTo: number;
+  /** Lane arc length a planted thumper must stay within to be on screen even in tall windows (defaults to visibleTo). */
+  thumperTo?: number;
 };
 
 /** One pass: the head leaves `entry` at clock `start` and swims to the lane's end. */
@@ -99,6 +101,8 @@ export type Summons = {
   breach: { start: number; entry: number; end: number; after: number } | null;
   /** An earlier breach still swimming when this thumper was planted; it dives before the new one. */
   prior: Pass | null;
+  /** Where the thumper stands on Shai-Hulud's lane (arc length): just ahead of the maw at its peak. */
+  thumperAt: number;
 };
 
 export type WormPose = {
@@ -257,8 +261,12 @@ export function planThumper(route: WormRoute, planted: number, previous?: Summon
   const surfaced = pass.start + (window.from - pass.entry) / spec.speed;
   const rearAt = active ? Math.max(earliest, surfaced) : earliest;
   const pose = wormPose(route, rearAt, previous);
-  if (pose.active && rearAt - earliest < 4 && pose.head >= window.from && pose.head + reach * 0.5 <= window.to) {
-    return { planted, rearAt, anchor, breach: swimming, prior: null };
+  const inPlace: Summons = { planted, rearAt, anchor, breach: swimming, prior: null, thumperAt: 0 };
+  if (
+    pose.active && rearAt - earliest < 4 && pose.head >= window.from && pose.head + reach * 0.5 <= window.to
+    && thumperSpot(route, inPlace) <= thumperLimit(route)
+  ) {
+    return placeThumper(route, inPlace);
   }
 
   // Otherwise burst out mid-ridge once any part of it still showing has dived.
@@ -266,12 +274,79 @@ export function planThumper(route: WormRoute, planted: number, previous?: Summon
   const lead = 1.1; // seconds between the head breaking the surface and the rear-up
   const start = Math.max(earliest - lead, planted + DIVE + 0.2);
   const end = start + passDuration(route, entry);
-  return {
+  return placeThumper(route, {
     planted,
     rearAt: start + lead,
     anchor,
     breach: { start, entry, end, after: end + wormPeriod(route) - passDuration(route) },
     prior: swimming ? { start: swimming.start, entry: swimming.entry } : null,
+    thumperAt: 0,
+  });
+}
+
+/** Where the head will be at the top of the rear-up, plus a little: the thumper stands just ahead of the maw. */
+function thumperSpot(route: WormRoute, summons: Summons) {
+  return wormPose(route, summons.rearAt + SUMMONED.rise, summons).head + route.spec.radius * 1.2;
+}
+
+/** The furthest a thumper (and its hammer) can stand and still be on screen. */
+const thumperLimit = (route: WormRoute) => (route.thumperTo ?? route.visibleTo) - route.spec.radius * 0.6;
+
+function placeThumper(route: WormRoute, summons: Summons): Summons {
+  return { ...summons, thumperAt: Math.max(0, Math.min(thumperSpot(route, summons), thumperLimit(route))) };
+}
+
+/** How the thumper looks at clock time `t`, or null before it is planted and once it is swallowed. */
+export type ThumperPose = {
+  /** Lane arc length it stands at. */
+  at: number;
+  /** 0 while it falls into place, 1 once planted. */
+  planted: number;
+  /** Hammer height, 0 (struck) to 1 (cocked). */
+  hammer: number;
+  /** Index of the latest strike (-1 before the first) and seconds since it, Infinity once its rings have faded. */
+  beat: number;
+  struck: number;
+  /** 0 standing to 1 gone under the sand, as Shai-Hulud takes it. */
+  sunk: number;
+};
+
+/** Seconds the thumper takes to fall into the sand; it strikes as it lands. */
+export const THUMPER_DROP = 0.25;
+const SWALLOW = { from: 1, to: 2.2 };
+/** How long a strike's rings keep spreading. */
+const RINGING = 0.9;
+
+/** Strikes fall every THUMP_INTERVAL from the landing until Shai-Hulud answers: their count and first time. */
+export function thumperBeats(summons: Summons) {
+  const first = summons.planted + THUMPER_DROP;
+  return { first, count: Math.max(0, Math.ceil((summons.rearAt - first) / THUMP_INTERVAL)) };
+}
+
+export function thumperPose(summons: Summons | null | undefined, t: number): ThumperPose | null {
+  if (!summons || t < summons.planted || t > summons.rearAt + SWALLOW.to) return null;
+  const { first, count } = thumperBeats(summons);
+  const since = t - first;
+  // It falls with the hammer cocked, and strikes as it lands.
+  let hammer = 1;
+  let beat = -1;
+  let struck = Infinity;
+  if (since >= 0 && count > 0) {
+    beat = Math.min(count - 1, Math.floor(since / THUMP_INTERVAL));
+    struck = since - beat * THUMP_INTERVAL;
+    // Cocked slowly and dropped hard, but only while another strike is still to come.
+    hammer = beat + 1 >= count ? 0 : struck < THUMP_INTERVAL * 0.7
+      ? smoothstep(0.05, THUMP_INTERVAL * 0.7, struck)
+      : 1 - smoothstep(THUMP_INTERVAL - 0.06, THUMP_INTERVAL, struck);
+    if (struck >= RINGING) struck = Infinity;
+  }
+  return {
+    at: summons.thumperAt,
+    planted: smoothstep(0, THUMPER_DROP, t - summons.planted),
+    hammer,
+    beat,
+    struck,
+    sunk: smoothstep(summons.rearAt + SWALLOW.from, summons.rearAt + SWALLOW.to, t),
   };
 }
 
@@ -317,8 +392,9 @@ export function wormsignAt(routes: readonly WormRoute[], t: number, summons?: Su
   });
 
   let thump = 0;
-  if (summons && t >= summons.planted && t < summons.rearAt) {
-    const since = t - summons.planted;
+  const first = summons ? summons.planted + THUMPER_DROP : Infinity;
+  if (summons && t >= first && t < summons.rearAt) {
+    const since = t - first;
     const beat = since - Math.floor(since / THUMP_INTERVAL) * THUMP_INTERVAL;
     thump = Math.exp(-beat * 9);
     value += 0.7 * thump * Math.cos(TAU * 6 * beat);

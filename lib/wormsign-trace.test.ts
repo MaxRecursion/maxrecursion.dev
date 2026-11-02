@@ -10,7 +10,7 @@ const worms: typeof import("./sandworms") = await import(
 const trace: typeof import("./wormsign-trace") = await import(
   new URL("./wormsign-trace.ts", import.meta.url).href
 );
-const { THUMP_INTERVAL, WORMS, planThumper, summonedDuration, thumperReady, wormsignAt } = worms;
+const { THUMPER_DROP, THUMP_INTERVAL, WORMS, planThumper, summonedDuration, thumperReady, wormsignAt } = worms;
 const {
   PAPER_SPEED, SLOT_SECONDS, createStrip, growStrip, nextPhaseChange, penDeflection, recordStrip, thumperPhase, walkStrip,
 } = trace;
@@ -19,7 +19,11 @@ const {
 const tracks = WORMS.map((spec) => {
   const path = geo.createPath(geo.WORM_LANES[spec.lane]);
   const eastward = path.xs[path.xs.length - 1] > path.xs[0];
-  return { spec, path, length: path.length, visibleTo: eastward ? geo.arcLengthAtX(path, 1640) : path.length };
+  return {
+    spec, path, length: path.length,
+    visibleTo: eastward ? geo.arcLengthAtX(path, 1640) : path.length,
+    thumperTo: eastward ? geo.arcLengthAtX(path, 1560) : path.length,
+  };
 });
 const [shaiHulud] = tracks;
 const calm = (t: number) => wormsignAt(tracks, t).value;
@@ -125,7 +129,7 @@ test("every thumper beat swings the pen", () => {
     const strip = createStrip(((summons.rearAt - planted) + 2) * PAPER_SPEED);
     recordStrip(strip, summons.rearAt + 1, (t) => wormsignAt(tracks, t, summons).value);
     const paper = samples(strip);
-    for (let beat = planted; beat < summons.rearAt - 0.3; beat += THUMP_INTERVAL) {
+    for (let beat = planted + THUMPER_DROP; beat < summons.rearAt - 0.3; beat += THUMP_INTERVAL) {
       // The beat may land late in its slot and peak in the next one.
       const slot = Math.floor(beat / SLOT_SECONDS);
       const swing = Math.max(...paper

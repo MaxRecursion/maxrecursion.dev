@@ -8,6 +8,7 @@ const worms: typeof import("./sandworms") = await import(
   new URL("./sandworms.ts", import.meta.url).href
 );
 const {
+  THUMPER_DROP, THUMP_INTERVAL, thumperBeats, thumperPose,
   THUMP_LEAD, WORMS, passDuration, planThumper, rearDuration, spineHeight, summonedDuration, thumperReady, wormPeriod,
   wormPose, wormsignAt, bodyRadius,
 } = worms;
@@ -16,7 +17,11 @@ const {
 const tracks = WORMS.map((spec) => {
   const path = geo.createPath(geo.WORM_LANES[spec.lane]);
   const eastward = path.xs[path.xs.length - 1] > path.xs[0];
-  return { spec, path, length: path.length, visibleTo: eastward ? geo.arcLengthAtX(path, 1640) : path.length };
+  return {
+    spec, path, length: path.length,
+    visibleTo: eastward ? geo.arcLengthAtX(path, 1640) : path.length,
+    thumperTo: eastward ? geo.arcLengthAtX(path, 1560) : path.length,
+  };
 });
 const [shaiHulud, east, west] = tracks;
 
@@ -183,9 +188,10 @@ test("the wormsign trace is bounded and beats while a thumper waits", () => {
     assert.equal(sign.thump, 0);
   }
   const summons = planThumper(shaiHulud, 100);
-  const beats = [0, 0.8, 1.6, 2.4].map((dt) => wormsignAt(tracks, 100 + dt + 0.01, summons).thump);
+  const beats = [0, 0.8, 1.6, 2.4].map((dt) => wormsignAt(tracks, 100 + THUMPER_DROP + dt + 0.01, summons).thump);
+  assert.equal(wormsignAt(tracks, 100 + 0.1, summons).thump, 0);
   assert.ok(beats.every((beat) => beat > 0.8));
-  assert.ok(wormsignAt(tracks, 100 + 0.5, summons).thump < 0.1);
+  assert.ok(wormsignAt(tracks, 100 + THUMPER_DROP + 0.5, summons).thump < 0.1);
   assert.equal(wormsignAt(tracks, summons.rearAt + 0.1, summons).thump, 0);
 });
 
@@ -224,4 +230,47 @@ test("every answer to a thumper rears up on screen, and a breach skips the routi
     }
     previous = planThumper(shaiHulud, planted, previous);
   }
+});
+
+test("the thumper stands on screen just ahead of the rearing maw, strikes on the beats, then is swallowed", () => {
+  const plantings: (ReturnType<typeof planThumper> | null)[] = [];
+  let previous: ReturnType<typeof planThumper> | null = null;
+  for (let planted = 0; planted < wormPeriod(shaiHulud) * 2; planted += 2.9) {
+    plantings.push(planThumper(shaiHulud, planted));
+    previous = planThumper(shaiHulud, planted, previous);
+    plantings.push(previous);
+  }
+  for (const summons of plantings) {
+    if (!summons) continue;
+    const { planted } = summons;
+    // On screen down to a 1.45 aspect ratio, hammer included.
+    assert.ok(summons.thumperAt > 0);
+    assert.ok(geo.samplePath(shaiHulud.path, summons.thumperAt).x + 0.525 * shaiHulud.spec.radius <= 1560);
+    // At the top of the rear-up the head is just behind the thumper.
+    const peak = wormPose(shaiHulud, summons.rearAt + 1.3, summons).head;
+    assert.ok(summons.thumperAt - peak >= -1e-6 && summons.thumperAt - peak <= shaiHulud.spec.radius * 1.3);
+
+    assert.equal(thumperPose(summons, planted - 0.01), null);
+    // It falls cocked and strikes as it lands.
+    const falling = thumperPose(summons, planted + 0.1)!;
+    assert.ok(falling.planted < 1 && falling.hammer === 1 && falling.struck === Infinity && falling.beat === -1);
+    const { first, count } = thumperBeats(summons);
+    assert.ok(count >= 3);
+    for (let k = 0; k < count; k++) {
+      const strike: NonNullable<ReturnType<typeof thumperPose>> = thumperPose(summons, first + k * THUMP_INTERVAL + 1e-6)!;
+      assert.equal(strike.planted, 1);
+      assert.ok(strike.hammer < 0.01 && strike.struck < 0.01 && strike.beat === k);
+      // The seismograph beats at the same moment.
+      assert.ok(wormsignAt(tracks, first + k * THUMP_INTERVAL + 0.01, summons).thump > 0.8);
+      if (k + 1 < count) assert.ok(thumperPose(summons, first + (k + 0.65) * THUMP_INTERVAL)!.hammer > 0.9);
+    }
+    // No silent extra blow: after the last strike the hammer rests.
+    for (let t = first + (count - 1) * THUMP_INTERVAL + 0.02; t < summons.rearAt + 2; t += 0.05) {
+      assert.ok(thumperPose(summons, t)!.hammer < 0.01);
+    }
+    assert.equal(thumperPose(summons, summons.rearAt + 0.5)!.sunk, 0);
+    assert.equal(thumperPose(summons, summons.rearAt + 2.2)!.sunk, 1);
+    assert.equal(thumperPose(summons, summons.rearAt + 2.3), null);
+  }
+  assert.equal(thumperPose(null, 10), null);
 });
