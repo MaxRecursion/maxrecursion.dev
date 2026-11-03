@@ -49,8 +49,8 @@ export const overrides: Record<string, ProjectOverride> = {
     description:
       "Turn public GitHub repositories into interactive architecture maps. Trace JavaScript and TypeScript imports, explore modules and packages, and inspect source at the exact commit analyzed.",
     highlight:
-      "Deterministic source parsing ties graph connections to files and lines, with SVG export. Change impact compares branches or commits using a free, explicitly simulated demo; live Jev decisions require operator setup.",
-    tags: ["React + Vite", "TypeScript", "React Flow", "Jev"],
+      "Deterministic source parsing ties graph connections to files and lines, with SVG export. Change impact compares branches or commits using an explicitly simulated demo, with optional self-hosted Laya decisions after operator setup.",
+    tags: ["React + Vite", "TypeScript", "React Flow", "Laya"],
     image: "/projects/archeo.png",
     imageAlt:
       "Archeo's landing page with the 'Understand any codebase' headline, a GitHub repository form and an illustrative dependency graph.",
