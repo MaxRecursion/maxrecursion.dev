@@ -7,8 +7,8 @@ import { site } from "@/content/site";
 export function GET() {
   const projects = featured.map((repo) => {
     const o = overrides[repo] ?? {};
-    // Apps hosted on a maxrecursion.dev subdomain publish their own, more detailed llms.txt.
-    const ownLlms = o.liveUrl?.endsWith(".maxrecursion.dev") && `[llms.txt](${o.liveUrl}/llms.txt)`;
+    // Repository-backed apps publish detailed llms.txt files; standalone games may not.
+    const ownLlms = !o.standalone && o.liveUrl?.endsWith(".maxrecursion.dev") && `[llms.txt](${o.liveUrl}/llms.txt)`;
     const links = [o.liveUrl && `[${o.liveLabel ?? "Live"}](${o.liveUrl})`, `[Source](${site.links.github}/${repo})`, o.technicalUrl && `[Technical notes](${o.technicalUrl})`, ownLlms]
       .filter(Boolean)
       .join(" · ");

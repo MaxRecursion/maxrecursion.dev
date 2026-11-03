@@ -155,6 +155,12 @@ export async function getProjectFeed(): Promise<ProjectFeed> {
   if (!result.ok) console.error(`[projects] GitHub feed unavailable, using the curated list: ${result.reason}`);
   const projects = result.ok ? result.projects : fallbackProjects();
   const byName = new Map(projects.map((p) => [p.name, p]));
+  // Keep curated projects visible while the public GitHub feed catches up.
+  for (const project of fallbackProjects()) {
+    if (overrides[project.name]?.standalone && !byName.has(project.name)) {
+      byName.set(project.name, project);
+    }
+  }
   const featuredProjects = featured.flatMap((name) => byName.get(name) ?? []);
   const others = degraded
     ? []

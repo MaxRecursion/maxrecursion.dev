@@ -1,5 +1,7 @@
 export type ProjectOverride = {
   title?: string;
+  /** Include this curated project even when it is absent from the public GitHub feed. */
+  standalone?: boolean;
   /** What it is and the problem it solves. */
   description?: string;
   /** The most interesting engineering characteristic, stated only where the repo supports it. */
@@ -21,7 +23,7 @@ export type ProjectOverride = {
 };
 
 /** Featured projects, in display order. */
-export const featured = ["Archeo", "ActiveAero_F1", "AutoVerse", "DataDrivenSIP", "Xposter", "DiskLens", "gitflow-studio"];
+export const featured = ["irontrail", "Archeo", "ActiveAero_F1", "AutoVerse", "DataDrivenSIP", "Xposter", "DiskLens", "gitflow-studio"];
 
 /** Repos that have a write-up under /case-studies. Shown in their own section, not in the grid. */
 export const caseStudyRepos = ["CSVToParquet", "f1analyst"];
@@ -30,6 +32,20 @@ export const caseStudyRepos = ["CSVToParquet", "f1analyst"];
 export const hidden = ["HealthVault"];
 
 export const overrides: Record<string, ProjectOverride> = {
+  irontrail: {
+    title: "IRONTRAIL — Deadland Rally",
+    standalone: true,
+    description:
+      "A 2D monster-truck rally through ten zombie-filled tracks. Manage fuel, land jumps, stop a giant with your only cannon shot, and race Iron Maw in the finale.",
+    highlight:
+      "Planck.js suspension and vehicle collisions, a fixed 120 Hz simulation with interpolated rendering, slow-motion shooting and procedural Web Audio — bundled into one offline HTML file.",
+    tags: ["JavaScript", "Canvas 2D", "Planck.js", "Web Audio"],
+    image: "/projects/irontrail.jpg",
+    imageAlt:
+      "IRONTRAIL gameplay: a cannon-equipped monster truck jumping across a desert track toward a zombie and fuel can, with fuel and single-charge cannon controls.",
+    liveUrl: "https://irontrail.maxrecursion.dev",
+    liveLabel: "Play game",
+  },
   "gitflow-studio": {
     title: "GitFlow Studio",
     description:
