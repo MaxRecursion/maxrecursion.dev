@@ -12,6 +12,7 @@ const secondary =
 function Preview({ project }: { project: Project }) {
   if (project.image) {
     return (
+      <>
       <Image
         src={project.image}
         alt={project.imageAlt ?? ""}
@@ -21,6 +22,12 @@ function Preview({ project }: { project: Project }) {
         sizes="(min-width: 768px) 488px, 100vw"
         className="object-cover object-top"
       />
+      {project.name.toLowerCase() === "irontrail" && (
+        <a href="/projects/irontrail-phone.png" target="_blank" rel="noreferrer noopener" className="absolute bottom-3 right-3 h-3/5 aspect-[390/844] overflow-hidden rounded-lg border-2 border-white/60 shadow-xl" aria-label="View latest phone gameplay screenshot">
+          <Image src="/projects/irontrail-phone.png" alt="Ojas Monster Rally on a phone, with large touch pedals and picture controls" fill sizes="120px" className="object-cover" />
+        </a>
+      )}
+      </>
     );
   }
   if (project.flow) return <FlowPreview {...project.flow} />;

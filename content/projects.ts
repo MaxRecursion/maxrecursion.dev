@@ -33,18 +33,19 @@ export const hidden = ["HealthVault"];
 
 export const overrides: Record<string, ProjectOverride> = {
   irontrail: {
-    title: "IRONTRAIL — Deadland Rally",
+    title: "IRONTRAIL — Ojas’s Monster Rally",
     standalone: true,
     description:
-      "A 2D monster-truck rally through ten zombie-filled tracks. Manage fuel, land jumps, stop a giant with your only cannon shot, and race Iron Maw in the finale.",
+      "A red-and-black monster-truck adventure made for Ojas. Race ten tracks, charge nitro through jumps and roadside smashes, stop a giant with one cannon shot, and challenge Iron Maw.",
     highlight:
-      "Planck.js suspension and vehicle collisions, a fixed 120 Hz simulation with interpolated rendering, slow-motion shooting and procedural Web Audio — bundled into one offline HTML file.",
+      "Physical suspension and vehicle collisions at a fixed 120 Hz, interpolated Canvas rendering, slow-motion cannon shots, synthesized music, ghost replays and upgrades — in one offline HTML file. Picture controls and live star goals support touch, keyboard and gamepad.",
     tags: ["JavaScript", "Canvas 2D", "Planck.js", "Web Audio"],
-    image: "/projects/irontrail.jpg",
+    image: "/projects/irontrail-redline.jpg",
     imageAlt:
-      "IRONTRAIL gameplay: a cannon-equipped monster truck jumping across a desert track toward a zombie and fuel can, with fuel and single-charge cannon controls.",
+      "Latest Ojas Monster Rally gameplay: red spider-emblem truck, picture HUD, live star goals, fuel, nitro and single-charge cannon controls.",
     liveUrl: "https://irontrail.maxrecursion.dev",
     liveLabel: "Play game",
+    technicalUrl: "https://github.com/MaxRecursion/irontrail/blob/main/HANDOFF.md",
   },
   "gitflow-studio": {
     title: "GitFlow Studio",
