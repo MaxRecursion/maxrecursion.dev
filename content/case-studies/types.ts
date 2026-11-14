@@ -21,6 +21,10 @@ export type CaseStudy = {
   title: string;
   /** Short title for cards and the page eyebrow. */
   kicker: string;
+  /** <title> before the site suffix, written with the terms people search for. */
+  seoTitle: string;
+  /** Meta description, 155 characters or fewer. */
+  seoDescription: string;
   /** One or two sentences: the question and the answer. */
   summary: string;
   /** The single most useful result, with its conditions, for the homepage card. */
@@ -28,6 +32,8 @@ export type CaseStudy = {
   stack: string[];
   /** ISO date the write-up was first published, for structured data. */
   published: string;
+  /** ISO date of the last substantive edit, if any. */
+  updated?: string;
   facts: { label: string; value: string }[];
   sections: Section[];
   /** Files in the repository that back the claims above. */

@@ -17,8 +17,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// The handle ties the name to the brand people search for, and the city disambiguates a common name.
-const title = `${site.name} (${site.handle}) | ${site.role}, ${site.location.split(",")[0]}`;
+// The handle ties the name to the brand people search for, the stack names what the work is, and the
+// city disambiguates a common name. About 60 characters, so Google shows it whole.
+const title = `${site.name} (${site.handle}) | .NET & Blazor Engineer, ${site.location.split(",")[0]}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -31,7 +32,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: site.url,
-    siteName: site.name,
+    siteName: site.handle,
+    locale: "en_US",
     title,
     description: site.description,
   },

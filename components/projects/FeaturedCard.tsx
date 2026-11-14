@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { trackClick } from "@/lib/analytics";
 import type { Project } from "@/lib/github";
 import { ArrowUpRight, GitHubIcon } from "@/components/icons";
@@ -58,7 +59,15 @@ export function FeaturedCard({
       </div>
       <div className={`flex flex-1 flex-col p-6 ${wide ? "md:justify-center md:p-10" : ""}`}>
         <div className="flex items-start justify-between gap-4">
-          <h3 className="text-xl font-semibold tracking-tight">{project.title}</h3>
+          <h3 className="text-xl font-semibold tracking-tight">
+            {project.page ? (
+              <Link href={project.page} className="rounded hover:text-accent">
+                {project.title}
+              </Link>
+            ) : (
+              project.title
+            )}
+          </h3>
           {project.language && <span className="shrink-0 pt-1 font-mono text-xs text-muted">{project.language}</span>}
         </div>
         <p className="mt-2 text-sm leading-relaxed text-muted">{project.description}</p>
@@ -109,6 +118,16 @@ export function FeaturedCard({
               : {project.title} on GitHub (opens in a new tab)
             </span>
           </a>
+          {project.page && (
+            <Link
+              href={project.page}
+              className={secondary}
+              {...trackClick({ name: "project_click", params: { project_name: project.name, destination: "project_details" } })}
+            >
+              Details
+              <span className="sr-only">: about {project.title}</span>
+            </Link>
+          )}
           {project.technicalUrl && (
             <a
               href={project.technicalUrl}

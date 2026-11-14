@@ -22,7 +22,10 @@ export const site = {
       "I'm Akshay Kulkarni, a senior software engineer in Pune. 15+ years shipping software, 12+ of them in payments, mortgage and banking. Outside work I build data pipelines, native macOS apps, interactive 3D explainers and LLM tools.",
     proof: "CorpoRat-developer since 2011",
   },
+  // 155 characters or fewer so Google shows it whole; `longDescription` is the full version.
   description:
+    "Akshay Kulkarni (MaxRecursion), senior software engineer in Pune: 15+ years, 12+ in finance. .NET and Blazor apps, data pipelines and 3D explainers.",
+  longDescription:
     "Akshay Kulkarni (MaxRecursion) is a senior software engineer in Pune with 15+ years of experience, 12+ in financial services, who also builds data pipelines, native macOS apps, interactive 3D explainers and LLM automation.",
   bio: [
     "I've been a CorpoRat-developer since 2011, and for the last twelve-plus years that has meant financial services: mortgage-domain applications for a banking client, a money-transfer product where I was technical lead, and today .NET and Blazor WebAssembly applications.",

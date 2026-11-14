@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { projectLinkText, projectPageList } from "@/content/project-pages";
 import { site } from "@/content/site";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { ThemeToggle } from "@/components/theme";
@@ -65,6 +66,20 @@ export function Section({
 export function Footer() {
   return (
     <footer data-site-footer className="border-t border-border">
+      {/* Site-wide links to every project and topic page, so each is one click from anywhere. */}
+      <nav aria-label="Site" className="mx-auto max-w-5xl px-6 pt-8 text-sm">
+        <ul className="flex flex-wrap gap-x-5 gap-y-2 text-muted">
+          {projectPageList.map((p) => (
+            <li key={p.slug}>
+              <Link href={`/projects/${p.slug}`} className="inline-block py-1 hover:text-foreground">
+                {projectLinkText(p)}
+              </Link>
+            </li>
+          ))}
+          <li><Link href="/blazor" className="inline-block py-1 hover:text-foreground">Blazor WebAssembly</Link></li>
+          <li><Link href="/case-studies" className="inline-block py-1 hover:text-foreground">Case studies</Link></li>
+        </ul>
+      </nav>
       <div className="mx-auto flex max-w-5xl flex-col gap-3 px-6 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
         <p>
           {site.name} · {site.location}
