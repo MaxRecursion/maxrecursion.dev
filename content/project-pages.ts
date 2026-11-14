@@ -86,7 +86,7 @@ export const projectPages: Record<string, ProjectPage> = {
     slug: "archeo",
     title: "Archeo: interactive architecture maps of GitHub repos",
     description:
-      "Archeo turns public GitHub repositories into interactive architecture maps: trace JavaScript and TypeScript imports and inspect source at the analysed commit.",
+      "Archeo turns public GitHub repos into interactive architecture maps: trace JavaScript and TypeScript imports and inspect source at the analysed commit.",
     lead: "Archeo, the codebase archaeologist, turns a public GitHub repository into an interactive architecture map. Trace JavaScript and TypeScript imports, explore modules and packages, and inspect source at the exact commit analysed.",
     about: [
       "Graph connections come from deterministic source parsing, so every edge is tied to a file and a line. Maps can be exported as SVG.",
@@ -105,7 +105,7 @@ export const projectPages: Record<string, ProjectPage> = {
     slug: "irontrail",
     title: "IRONTRAIL: Ojas's Monster Rally browser game",
     description:
-      "IRONTRAIL is a monster-truck browser game: ten tracks, nitro jumps, a cannon and a boss, with touch, keyboard and gamepad controls in one offline HTML file.",
+      "IRONTRAIL is a monster-truck browser game: ten tracks, nitro jumps, a cannon and a boss, with touch, keyboard and gamepad controls in one offline file.",
     lead: "IRONTRAIL, Ojas's Monster Rally, is a red-and-black monster-truck adventure. Race ten tracks, charge nitro through jumps and roadside smashes, stop a giant with one cannon shot, and challenge Iron Maw.",
     about: [
       "The game runs physical suspension and vehicle collisions at a fixed 120 Hz with interpolated Canvas rendering, plus slow-motion cannon shots, synthesized music, ghost replays and upgrades, all in one offline HTML file.",

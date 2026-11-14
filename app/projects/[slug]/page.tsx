@@ -23,8 +23,9 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
     path: `/projects/${page.slug}`,
     title: page.title,
     description: page.description,
-    image: o.image,
-    imageAlt: o.imageAlt,
+    // Projects without a screenshot share the site's card rather than having no preview at all.
+    image: o.image ?? "/opengraph-image",
+    imageAlt: o.image ? o.imageAlt : `${site.name}, ${site.role}`,
   });
 }
 
