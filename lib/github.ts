@@ -1,4 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { projectPages } from "@/content/project-pages";
 import { caseStudyRepos, featured, hidden, overrides } from "@/content/projects";
 import { site } from "@/content/site";
 
@@ -34,7 +35,11 @@ export type Project = {
   image?: string;
   imageAlt?: string;
   flow?: { label: string; steps: string[] };
+  /** This site's detail page for the project, when it has one. */
+  page?: string;
 };
+
+const pageFor = (name: string) => (projectPages[name] ? `/projects/${projectPages[name].slug}` : undefined);
 
 const repoUrl = (name: string) => `https://github.com/${site.handle}/${name}`;
 
@@ -73,6 +78,7 @@ function toProject(repo: GitHubRepo): Project {
     image: o.image,
     imageAlt: o.imageAlt,
     flow: o.flow,
+    page: pageFor(repo.name),
   };
 }
 
@@ -135,6 +141,7 @@ function fallbackProjects(): Project[] {
       image: o.image,
       imageAlt: o.imageAlt,
       flow: o.flow,
+      page: pageFor(name),
     };
   });
 }

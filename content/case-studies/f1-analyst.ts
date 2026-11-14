@@ -8,6 +8,9 @@ export const f1Analyst: CaseStudy = {
   repo: "f1analyst",
   kicker: "F1 Analyst",
   title: "Where should a client-side query engine live?",
+  seoTitle: "Blazor WebAssembly + DuckDB: where should the query engine live?",
+  seoDescription:
+    "A measured comparison of three Blazor WebAssembly query-engine topologies with DuckDB on a million rows: speed, UI responsiveness and cancellation.",
   summary:
     "The same million-row workload, queries and UI run against three Blazor WebAssembly engine topologies. The deciding measurement was not speed but whether the browser stayed responsive and the query could be cancelled.",
   finding:

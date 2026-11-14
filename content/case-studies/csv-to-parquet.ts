@@ -7,6 +7,9 @@ export const csvToParquet: CaseStudy = {
   slug: "csv-to-parquet",
   repo: "CSVToParquet",
   title: "Converting multi-gigabyte CSVs to Parquet in bounded memory",
+  seoTitle: "CSV to Parquet in ASP.NET Core with DuckDB, in bounded memory",
+  seoDescription:
+    "An ASP.NET Core service that streams multi-gigabyte CSV files to Parquet through disk with one DuckDB COPY, so input size is limited by disk, not memory.",
   kicker: "CSV to Parquet",
   summary:
     "An ASP.NET Core service that turns an uploaded CSV into a Parquet file. Both files stream through disk, so input size is limited by disk rather than memory, and DuckDB does the conversion in a single COPY statement.",

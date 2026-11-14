@@ -21,9 +21,10 @@ export function Hero() {
         </p>
         <h1 id="hero-title" aria-label={`${site.name}: ${site.hero.headline.join(" ")}`} className={styles.headline}>
           <span className="sr-only">{site.name}: </span>
+          {/* A space after each line, so crawlers and copy-paste read "software for", not "softwarefor". */}
           {site.hero.headline.map((line, i) => (
             <span key={line} className={`hero-rise ${i > 1 ? styles.secondaryLine : ""}`} style={rise(80 + i * 75)}>
-              {line}
+              {line}{" "}
             </span>
           ))}
         </h1>

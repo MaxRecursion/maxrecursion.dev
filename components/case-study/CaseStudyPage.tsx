@@ -79,7 +79,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
       <Header />
       <main id="main" className="mx-auto max-w-3xl px-6 pb-24 pt-28 sm:pt-32">
         <nav aria-label="Breadcrumb" className="font-mono text-xs text-muted">
-          <Link href="/#case-studies" className="rounded py-2 hover:text-foreground">
+          <Link href="/case-studies" className="rounded py-2 hover:text-foreground">
             ← All case studies
           </Link>
         </nav>

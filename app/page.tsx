@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CaseStudyCard } from "@/components/case-study/CaseStudyCard";
 import { Hero } from "@/components/hero/Hero";
 import { FeaturedCard } from "@/components/projects/FeaturedCard";
@@ -45,7 +46,15 @@ export default async function Home() {
         <Section id="case-studies" eyebrow="Engineering write-ups" title="Case studies">
           <p className="-mt-4 mb-8 max-w-2xl text-muted">
             Two projects written up with their constraints, decisions and trade-offs, and with what the
-            evidence does and does not show.
+            evidence does and does not show. More on my{" "}
+            <Link href="/blazor" className="text-accent underline decoration-accent/50 underline-offset-4 hover:decoration-accent">
+              Blazor WebAssembly work
+            </Link>
+            , or{" "}
+            <Link href="/case-studies" className="text-accent underline decoration-accent/50 underline-offset-4 hover:decoration-accent">
+              all case studies
+            </Link>
+            .
           </p>
           <div className="grid gap-6 md:grid-cols-2">
             {caseStudies.map((study, i) => (

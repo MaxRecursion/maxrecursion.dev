@@ -1,4 +1,5 @@
 import { caseStudies } from "@/content/case-studies";
+import { projectPages } from "@/content/project-pages";
 import { featured, overrides } from "@/content/projects";
 import { site } from "@/content/site";
 
@@ -9,7 +10,8 @@ export function GET() {
     const o = overrides[repo] ?? {};
     // Repository-backed apps publish detailed llms.txt files; standalone games may not.
     const ownLlms = !o.standalone && o.liveUrl?.endsWith(".maxrecursion.dev") && `[llms.txt](${o.liveUrl}/llms.txt)`;
-    const links = [o.liveUrl && `[${o.liveLabel ?? "Live"}](${o.liveUrl})`, `[Source](${site.links.github}/${repo})`, o.technicalUrl && `[Technical notes](${o.technicalUrl})`, ownLlms]
+    const page = projectPages[repo] && `[About](${site.url}/projects/${projectPages[repo].slug})`;
+    const links = [page, o.liveUrl && `[${o.liveLabel ?? "Live"}](${o.liveUrl})`, `[Source](${site.links.github}/${repo})`, o.technicalUrl && `[Technical notes](${o.technicalUrl})`, ownLlms]
       .filter(Boolean)
       .join(" · ");
     return `- **${o.title ?? repo}**: ${o.description ?? ""} ${links}`;
@@ -17,7 +19,7 @@ export function GET() {
 
   const body = `# ${site.name}
 
-> ${site.description}
+> ${site.longDescription}
 
 ${site.name} (also known as ${site.handle}) is a ${site.role.toLowerCase()} based in ${site.location}. ${site.summary}
 
@@ -32,6 +34,10 @@ ${site.bio.join("\n\n")}
 ## Projects
 
 ${projects.join("\n")}
+
+## Blazor
+
+- [Blazor WebAssembly engineering](${site.url}/blazor): measured in-browser DuckDB query-engine topologies in Blazor WebAssembly, and related .NET work.
 
 ## Case studies
 
