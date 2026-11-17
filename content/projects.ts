@@ -88,14 +88,15 @@ export const overrides: Record<string, ProjectOverride> = {
   },
   AutoVerse: {
     description:
-      "Free interactive lessons on how cars work, from engines and gearboxes to brakes and suspension, with live 3D labs and quizzes.",
+      "Learn how cars work through interactive lessons, quizzes and a sound lab spanning 19 production-engine presets, from inline-three to V10. Inspect moving 3D cutaways and compare firing rhythms.",
     highlight:
-      "React Three Fiber labs inside a Vite app that prerenders its routes to static HTML. Lesson content is checked by validation scripts and the app by Vitest and Playwright suites.",
-    tags: ["React", "React Three Fiber", "TypeScript", "Playwright"],
-    image: "/projects/autoverse.jpg",
+      "AudioWorklet synthesis follows engine firing timing and bank exhaust routing, alongside moving pistons, valves and continuous exhaust-gas animation. Compact bento layouts, a course sidebar and instant light/dark themes keep controls and progress close at hand.",
+    tags: ["React Three Fiber", "TypeScript", "Web Audio", "Playwright"],
+    image: "/projects/autoverse-sound-lab.jpg",
     imageAlt:
-      "AutoVerse's home page with the headline 'Understand Every Moving Part' beside a 3D cutaway of a four-stroke engine.",
+      "AutoVerse's Engine Sound Lab running a Dodge Viper V10, with a moving 3D cutaway, RPM and throttle controls, exhaust-pressure traces and course navigation in a compact bento layout.",
     liveUrl: "https://autoverse.maxrecursion.dev",
+    technicalUrl: "https://github.com/MaxRecursion/AutoVerse/blob/main/docs/ARCHITECTURE.md",
   },
   DataDrivenSIP: {
     title: "Tithi",

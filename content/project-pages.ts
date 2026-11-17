@@ -26,18 +26,22 @@ export type ProjectPage = {
 export const projectPages: Record<string, ProjectPage> = {
   AutoVerse: {
     slug: "autoverse",
-    title: "AutoVerse: free interactive lessons on how cars work",
+    title: "AutoVerse: 3D engine sound lab and car lessons",
     description:
-      "AutoVerse teaches how cars work, from engines and gearboxes to brakes and suspension, with free interactive 3D labs and quizzes in the browser.",
-    lead: "AutoVerse is a free, browser-based course on how cars work. Each lesson pairs a plain explanation with a live 3D lab you can turn and take apart, and a quiz to check what stuck.",
+      "Explore AutoVerse's 19 production-engine presets, inline-three to V10, with synthesized sound, moving 3D cutaways and free lessons on how cars work.",
+    lead: "AutoVerse is a free, browser-based guide to how cars work. Learn through lessons and quizzes, then explore its signature Engine Sound Lab: 19 production-engine presets from inline-three to V10, with synthesized sound and moving 3D cutaways.",
     about: [
-      "It covers the parts of a car most people use every day without seeing: the four-stroke engine, the gearbox, the brakes and the suspension. Instead of static diagrams, each topic has a 3D model built with React Three Fiber that you can rotate and interact with while you read.",
-      "Under the hood, AutoVerse is a Vite and React app that prerenders every route to static HTML, so lessons load quickly and are readable by search engines. Lesson content is checked by validation scripts, and the app is covered by Vitest and Playwright test suites.",
+      "Compare engine firing rhythms, adjust RPM and throttle, and inspect pistons, connecting rods, crankshafts, cams and valves. Continuous exhaust-gas animation follows the exhaust plumbing, while bank-angle and crankpin experiments reveal how geometry changes the firing rhythm. Audio is synthesized rather than recorded; the cutaways and gas effects are illustrative teaching models.",
+      "A course sidebar shows your position and next lesson. Compact bento layouts keep related controls, diagrams and readings together, with instant light and dark themes. Lessons cover engines, gearboxes, brakes, suspension and other car systems; progress stays in your browser.",
+      "React Three Fiber provides the 3D scenes, and an AudioWorklet synthesizes the engine sound. The Vite app prerenders its routes to static HTML and is checked with content validation, Vitest and Playwright.",
     ],
     features: [
-      "Lessons on engines, gearboxes, brakes and suspension",
-      "Interactive 3D labs built with React Three Fiber",
-      "Quizzes after each topic",
+      "19 production-engine presets, from inline-three to V10",
+      "Synthesized firing rhythms with RPM and throttle controls",
+      "Moving 3D cutaways and continuous exhaust-gas animation",
+      "Experimental bank-angle and crankpin controls for V engines",
+      "Course navigation, quizzes and browser-local progress",
+      "Responsive bento layouts with light and dark themes",
       "Free, in the browser, with no sign-up",
     ],
     category: "EducationalApplication",
